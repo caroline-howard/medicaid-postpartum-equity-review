@@ -1,0 +1,8 @@
+source_id,organization,title,url,date_accessed,source_type,policy_relevance,state_or_national,notes,include_in_policy_table
+POL001,CMS / Medicaid.gov,Medicaid postpartum coverage and maternal health pages,,,"government_source","Tracks federal Medicaid postpartum coverage policy context","national",,yes
+POL002,KFF,Medicaid Postpartum Coverage Extension Tracker,,,"policy_report","Tracks state adoption of postpartum Medicaid extensions","state",,yes
+POL003,MACPAC,Postpartum Medicaid coverage reports,,,"policy_report","Provides Medicaid policy analysis and federal/state context","national",,yes
+POL004,NASHP,Postpartum coverage tracker,,,"policy_report","Tracks state postpartum coverage policy implementation","state",,yes
+POL005,ACOG,Postpartum Medicaid coverage resources,,,"professional_association_source","Clinical and policy context for postpartum coverage","national",,yes
+POL006,Commonwealth Fund,Postpartum Medicaid coverage resources,,,"policy_report","Policy context for coverage, access, and equity","national",,yes
+POL007,State Medicaid agencies,State Medicaid postpartum extension documents,,,"state_policy_document","Primary state policy documentation","state",,yes

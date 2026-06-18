@@ -1,0 +1,18 @@
+academic_search_string: '(Medicaid OR CHIP) AND (postpartum OR "post-partum" OR pregnancy) AND (coverage OR eligibility OR extension OR "continuous coverage" OR churn OR redetermination) AND ("access to care" OR "continuity of care" OR morbidity OR mortality OR "behavioral health" OR equity OR disparities)'
+date_range:
+  start_year: 2014
+  end_year: 2026
+geography: United States
+policy_scan_terms:
+  - Medicaid postpartum coverage extension state plan amendment
+  - Section 1115 postpartum waiver
+  - Medicaid postpartum extension tracker
+  - postpartum Medicaid eligibility maternal health equity
+  - 12-month postpartum Medicaid coverage maternal health access
+  - Medicaid postpartum coverage continuity care equity
+record_volume_guidance:
+  target_initial_candidates_before_deduplication: approximately 100-400 records
+  potentially_too_narrow_threshold_combined_pubmed_openalex: 50
+  potentially_too_broad_threshold_combined_pubmed_openalex: 750
+  feasible_portfolio_final_core_sources: approximately 10-25 core evidence sources
+  note: Do not force final inclusion counts, exclude records to hit a target, or include weak records to reach a target.
