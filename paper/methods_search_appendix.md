@@ -3,9 +3,12 @@
 ## Databases And Interfaces
 
 - PubMed through NCBI E-utilities.
-- OpenAlex through the OpenAlex Works API.
 - Crossref through the Crossref Works API for metadata enrichment.
 - Manually curated policy and gray-literature sources tracked in `data/manual/policy_sources_manual.csv`.
+
+PubMed was used as the automated bibliographic database search for the main PRISMA workflow. This was supplemented by targeted policy and gray-literature searches from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, Commonwealth Fund, and state Medicaid documents.
+
+OpenAlex was tested during development but was not retained in the final main search workflow because the query returned an overly broad result set. OpenAlex is not treated as part of the final PRISMA search unless explicitly approved later.
 
 ## Exact Academic Search String
 
@@ -15,15 +18,15 @@
 
 - Geography: United States.
 - Date range: 2014-2026.
-- Sources: PubMed, OpenAlex, Crossref metadata enrichment, and manually curated policy/context sources.
+- Sources: PubMed, Crossref metadata enrichment, and manually curated policy/context sources.
 
 ## Search Logging
 
-Each search script appends source, interface/API, search date, exact search string, result count, downloaded count, and notes to `data/outputs/search_log.csv`.
+The PubMed search script appends source, interface/API, search date, exact search string, result count, downloaded count, and notes to `data/outputs/search_log.csv`. Exploratory OpenAlex testing is not included in the main search log.
 
 ## Deduplication Logic
 
-Records are combined across PubMed and OpenAlex and deduplicated in this order:
+PubMed records are deduplicated in this order:
 
 1. DOI when available.
 2. PMID when available.
@@ -33,7 +36,9 @@ The combined file, deduplicated file, and duplicate-record file are saved separa
 
 ## Automation Role
 
-Automation retrieves records, cleans metadata, deduplicates records, scores relevance, prepares screening files, and builds PRISMA-style count outputs. Automation does not formally exclude records in the first version. `records_marked_ineligible_by_automation` remains `0` unless an automated exclusion rule is explicitly approved later.
+Automation retrieves records, cleans metadata, deduplicates records, scores relevance, prepares screening files, and builds PRISMA-style count outputs.
+
+Title and abstract records were prioritized using a rule-based automation-assisted screening script that identified whether each record contained core concepts related to Medicaid/CHIP, postpartum or pregnancy-to-postpartum care, coverage or eligibility policy, access/outcome/equity relevance, and U.S. context. Records that clearly lacked required core concepts were marked as automation exclusion candidates and counted separately in the PRISMA flow diagram. A random validation sample of automation-excluded records was created for human review to assess whether relevant records were incorrectly excluded. Final full-text inclusion decisions were made by human review.
 
 ## Screening Process
 
@@ -42,6 +47,7 @@ Human reviewers complete title/abstract screening in `data/manual/screening_deci
 - `include_for_full_text`
 - `maybe`
 - `exclude`
+- `automation_exclude`
 
 Allowed exclusion reasons are:
 
@@ -72,7 +78,7 @@ There is no required number of included studies for this systematic review. Fina
 Practical record-volume targets are quality checks only:
 
 - Target initial candidate records after database searching: approximately 100-400 records before deduplication.
-- If fewer than 50 records are retrieved across PubMed and OpenAlex combined, flag the search as potentially too narrow and suggest broader search terms.
+- If fewer than 50 PubMed records are retrieved, flag the search as potentially too narrow and suggest broader search terms.
 - If more than 750 records are retrieved, flag the search as potentially too broad and suggest narrower search terms or additional filters.
 - Target final included sources for a feasible portfolio systematic review: approximately 10-25 core evidence sources, plus separately labeled policy/context sources if relevant.
 - Do not exclude records simply to hit a target number.
@@ -81,4 +87,4 @@ Practical record-volume targets are quality checks only:
 
 ## PRISMA Count Definitions
 
-`scripts/07_build_prisma_counts.py` reads the search log, deduplicated records, duplicate records, screening decisions, full-text review decisions, and evidence table. It outputs `data/outputs/prisma_counts.csv` with database identification counts, duplicate removals, human screening exclusions, full-text retrieval and eligibility counts, included studies, reports of included studies, and a record-volume quality flag.
+`scripts/07_build_prisma_counts.py` reads the PubMed-only main search log, deduplicated records, duplicate records, screening decisions, full-text review decisions, and evidence table. It outputs `data/outputs/prisma_counts.csv` with database identification counts, duplicate removals, human screening exclusions, full-text retrieval and eligibility counts, included studies, reports of included studies, and a record-volume quality flag.
