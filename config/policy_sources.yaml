@@ -1,0 +1,22 @@
+starter_sources:
+  - organization: CMS / Medicaid.gov
+    title: Medicaid postpartum coverage and maternal health pages
+    source_type: government_source
+  - organization: KFF
+    title: Medicaid Postpartum Coverage Extension Tracker
+    source_type: policy_report
+  - organization: MACPAC
+    title: Postpartum Medicaid coverage reports
+    source_type: policy_report
+  - organization: NASHP
+    title: Postpartum coverage tracker
+    source_type: policy_report
+  - organization: ACOG
+    title: Postpartum Medicaid coverage resources
+    source_type: professional_association_source
+  - organization: Commonwealth Fund
+    title: Postpartum Medicaid coverage resources
+    source_type: policy_report
+  - organization: State Medicaid agencies
+    title: State Medicaid postpartum extension documents
+    source_type: state_policy_document

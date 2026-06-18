@@ -1,0 +1,44 @@
+population:
+  include:
+    - Postpartum people covered by Medicaid or CHIP
+    - People affected by Medicaid postpartum eligibility or coverage policies
+    - Low-income or medically vulnerable postpartum populations
+  exclude:
+    - Non-postpartum populations without relevant subgroup findings
+    - Non-U.S. populations
+policy_or_intervention:
+  include:
+    - Medicaid postpartum coverage extensions
+    - 12-month postpartum coverage
+    - State plan amendments
+    - Section 1115 waivers
+    - Eligibility continuity
+    - Redetermination and insurance churn
+  exclude:
+    - Policies unrelated to Medicaid or CHIP
+outcomes:
+  include:
+    - Access to care
+    - Postpartum visit completion
+    - Continuity of coverage
+    - Insurance churn
+    - Behavioral health access
+    - Maternal morbidity
+    - Emergency department use
+    - Care coordination
+    - Health equity implications
+date_range: 2014-2026
+geography: United States only
+source_types:
+  include:
+    - Peer-reviewed studies
+    - Systematic reviews
+    - Policy reports
+    - Government sources
+    - State policy documents
+    - Professional association sources
+  exclude:
+    - Opinion without data or policy detail
+automation_guardrails:
+  final_include_exclude_decisions: human reviewer only
+  records_marked_ineligible_by_automation: 0
