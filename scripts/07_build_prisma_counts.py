@@ -69,7 +69,7 @@ def main() -> None:
     counts = {
         "records_identified_databases": records_identified,
         "records_identified_registers": 0,
-        "duplicate_records_removed": len(duplicates),
+        "duplicate_records_removed": max(records_identified - len(deduped), 0),
         "records_marked_ineligible_by_automation": 0,
         "records_removed_other_reasons": 0,
         "records_screened": screened,
