@@ -17,10 +17,23 @@ SCREENING_COLUMNS = [
     "source_database",
     "relevance_score",
     "automation_suggestion",
+    "automation_screening_tier",
+    "automation_exclusion_candidate",
+    "automation_exclusion_reason",
+    "automation_confidence_note",
+    "validation_sample_flag",
     "human_title_abstract_decision",
     "human_title_abstract_exclusion_reason",
     "full_text_needed",
     "notes",
+]
+
+PRESERVE_SCREENING_COLUMNS = [
+    "human_title_abstract_decision",
+    "human_title_abstract_exclusion_reason",
+    "full_text_needed",
+    "notes",
+    "validation_sample_flag",
 ]
 
 FULL_TEXT_COLUMNS = [
@@ -47,14 +60,42 @@ def main() -> None:
     if records.empty:
         records = read_csv_if_exists(DATA / "processed" / "deduplicated_records.csv")
     require_columns(records, ["record_id", "title", "abstract"], "scored_records.csv or deduplicated_records.csv")
+    existing_screening = read_csv_if_exists(DATA / "manual" / "screening_decisions.csv")
+    existing_by_id = existing_screening.set_index("record_id") if "record_id" in existing_screening.columns else pd.DataFrame()
     screening = pd.DataFrame()
     for column in SCREENING_COLUMNS:
         screening[column] = records[column] if column in records.columns else ""
+    if not existing_by_id.empty:
+        for column in PRESERVE_SCREENING_COLUMNS:
+            if column in existing_by_id.columns:
+                screening[column] = screening["record_id"].map(existing_by_id[column]).fillna(screening[column])
+    candidate_mask = screening["automation_exclusion_candidate"].astype(str).str.upper().eq("TRUE")
+    stale_auto_mask = (
+        screening["human_title_abstract_decision"].fillna("").astype(str).str.lower().eq("automation_exclude")
+        & ~candidate_mask
+    )
+    screening.loc[stale_auto_mask, "human_title_abstract_decision"] = ""
+    screening.loc[stale_auto_mask, "human_title_abstract_exclusion_reason"] = ""
+    screening.loc[stale_auto_mask, "notes"] = ""
+    blank_human_mask = screening["human_title_abstract_decision"].fillna("").astype(str).str.strip().eq("")
+    auto_mask = candidate_mask & blank_human_mask
+    screening.loc[auto_mask, "human_title_abstract_decision"] = "automation_exclude"
+    screening.loc[auto_mask, "human_title_abstract_exclusion_reason"] = screening.loc[auto_mask, "automation_exclusion_reason"]
+    screening.loc[auto_mask, "notes"] = "Automation-coded exclusion candidate; requires validation sampling."
     write_csv(screening, DATA / "manual" / "screening_decisions.csv")
+
+    existing_full_text = read_csv_if_exists(DATA / "manual" / "full_text_review.csv")
+    existing_full_text_by_id = existing_full_text.set_index("record_id") if "record_id" in existing_full_text.columns else pd.DataFrame()
     full_text = pd.DataFrame({"record_id": records["record_id"], "citation": records.apply(citation, axis=1)})
     for column in FULL_TEXT_COLUMNS:
         if column not in full_text.columns:
             full_text[column] = ""
+    if not existing_full_text_by_id.empty:
+        for column in FULL_TEXT_COLUMNS:
+            if column in ["record_id", "citation"]:
+                continue
+            if column in existing_full_text_by_id.columns:
+                full_text[column] = full_text["record_id"].map(existing_full_text_by_id[column]).fillna(full_text[column])
     write_csv(full_text[FULL_TEXT_COLUMNS], DATA / "manual" / "full_text_review.csv")
 
 

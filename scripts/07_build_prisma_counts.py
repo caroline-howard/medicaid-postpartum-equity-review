@@ -45,9 +45,9 @@ def volume_flag(records_identified: int) -> tuple[str, str]:
     narrow = int(guidance.get("potentially_too_narrow_threshold_combined_pubmed_openalex", 50))
     broad = int(guidance.get("potentially_too_broad_threshold_combined_pubmed_openalex", 750))
     if records_identified < narrow:
-        return "potentially_too_narrow", "Fewer than 50 PubMed and OpenAlex records combined; consider broader search terms."
+        return "potentially_too_narrow", "Fewer than 50 PubMed records retrieved for the main search; consider broader search terms."
     if records_identified > broad:
-        return "potentially_too_broad", "More than 750 PubMed and OpenAlex records combined; consider narrower terms or additional filters."
+        return "potentially_too_broad", "More than 750 PubMed records retrieved for the main search; consider narrower terms or additional filters."
     return "within_practical_check_range", "Use targets only as quality checks; final inclusion depends on documented human decisions."
 
 
@@ -60,8 +60,14 @@ def main() -> None:
     full_text = read_csv_if_exists(DATA / "manual" / "full_text_review.csv")
     evidence = read_csv_if_exists(DATA / "outputs" / "evidence_table.csv")
 
-    records_identified = int(pd.to_numeric(search_log.get("downloaded_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum())
-    screened = len(screening) if not screening.empty else len(deduped)
+    if "source" in search_log.columns:
+        main_search_log = search_log[search_log["source"].fillna("").astype(str).str.lower().eq("pubmed")]
+    else:
+        main_search_log = search_log
+    records_identified = int(pd.to_numeric(main_search_log.get("downloaded_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum())
+    screening_decisions = screening.get("human_title_abstract_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
+    automation_excluded = count_value(screening_decisions, "automation_exclude")
+    screened = max((len(screening) if not screening.empty else len(deduped)) - automation_excluded, 0)
     full_text_decisions = full_text.get("human_full_text_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
     exclusion_reasons = full_text.get("full_text_exclusion_reason", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
     flag, note = volume_flag(records_identified)
@@ -70,10 +76,10 @@ def main() -> None:
         "records_identified_databases": records_identified,
         "records_identified_registers": 0,
         "duplicate_records_removed": max(records_identified - len(deduped), 0),
-        "records_marked_ineligible_by_automation": 0,
+        "records_marked_ineligible_by_automation": automation_excluded,
         "records_removed_other_reasons": 0,
         "records_screened": screened,
-        "records_excluded_human": count_value(screening.get("human_title_abstract_decision", pd.Series(dtype=str)), "exclude"),
+        "records_excluded_human": count_value(screening_decisions, "exclude"),
         "reports_sought_for_retrieval": yes_count(screening.get("full_text_needed", pd.Series(dtype=str))),
         "reports_not_retrieved": count_value(full_text.get("full_text_retrieved", pd.Series(dtype=str)), "no"),
         "reports_assessed_for_eligibility": int(full_text_decisions.ne("").sum()),

@@ -35,12 +35,23 @@ Includes deduplicated record fields plus transparent relevance-score components:
 - `us_state_policy_hits`
 - `relevance_score`
 - `automation_suggestion`
+- `has_medicaid_chip`
+- `has_postpartum_pregnancy`
+- `has_coverage_policy`
+- `has_access_outcome_equity`
+- `has_us_context`
+- `has_clinical_only_terms`
+- `has_policy_terms`
+- `automation_screening_tier`
+- `automation_exclusion_candidate`
+- `automation_exclusion_reason`
+- `automation_confidence_note`
 
 ## `data/manual/screening_decisions.csv`
 
 Human title/abstract screening file. Automation suggestions are triage aids only.
 
-Allowed title/abstract decisions: `include_for_full_text`, `maybe`, `exclude`.
+Allowed title/abstract decisions: `include_for_full_text`, `maybe`, `exclude`, `automation_exclude`.
 
 Allowed exclusion reasons: `wrong_population`, `wrong_policy_or_intervention`, `not_medicaid_or_chip`, `not_postpartum`, `not_us_based`, `no_relevant_outcome`, `background_only`, `opinion_without_data_or_policy_detail`, `duplicate`, `other`.
 
@@ -59,3 +70,11 @@ Allowed source types: `peer_reviewed_study`, `systematic_review`, `policy_report
 ## `data/outputs/prisma_counts.csv`
 
 PRISMA-style counts derived from the search log, deduplication outputs, human screening file, full-text review file, and evidence table. Also includes `record_volume_flag` and `record_volume_note` as search-quality checks. These flags do not determine final inclusion.
+
+## `data/manual/automation_exclusion_validation_sample.csv`
+
+Human validation sample for records marked `automation_exclude`. Allowed validation decisions are `confirm_exclude`, `rescue_for_manual_screening`, and `unsure`.
+
+## `data/outputs/automation_screening_report.md`
+
+Markdown summary of automation tier counts, manual screening burden, top likely include/maybe titles, automation exclusion examples, and PRISMA reporting guidance.

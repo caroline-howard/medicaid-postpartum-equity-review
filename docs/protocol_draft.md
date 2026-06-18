@@ -20,7 +20,9 @@ Sources may include peer-reviewed studies, systematic reviews, policy reports, g
 
 ## Information Sources
 
-Academic records will be searched in PubMed and OpenAlex. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents.
+Academic records for the main PRISMA workflow will be searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents.
+
+OpenAlex was tested during development but is not retained in the final main search workflow because the query returned an overly broad result set. OpenAlex records are not treated as part of the final PRISMA search unless explicitly approved later.
 
 ## Search Strategy
 
@@ -39,14 +41,14 @@ Policy scan terms:
 
 ## Selection Process
 
-All candidate records remain available for human screening. Automated relevance scoring may suggest `likely_include`, `maybe`, or `likely_exclude`, but these suggestions are not formal exclusion decisions. A human reviewer completes title/abstract screening and full-text eligibility review using the manual CSV files.
+All candidate records remain available in the dataset. Automated relevance scoring assigns concept flags and conservative screening tiers. Records that clearly lack required core concepts may be marked `automation_exclude`, counted separately as records marked ineligible by automation, and sampled for human validation. Tier 1 and tier 2 records should be manually screened first; tier 3 records should receive a quick human check if time allows. A human reviewer completes final title/abstract rescue decisions, full-text eligibility review, and final inclusion decisions using the manual CSV files.
 
 ## Record Volume Quality Checks
 
 There is no required number of included studies. Final inclusion depends on eligibility criteria and human screening decisions. Practical targets are used only to assess search calibration:
 
 - Approximately 100-400 initial candidate records before deduplication is a useful target.
-- Fewer than 50 records across PubMed and OpenAlex combined should be flagged as potentially too narrow.
+- Fewer than 50 PubMed records should be flagged as potentially too narrow.
 - More than 750 records should be flagged as potentially too broad.
 - A feasible portfolio systematic review often includes approximately 10-25 core evidence sources, plus separately labeled policy/context sources when relevant.
 - Records must not be excluded or included merely to hit a target number.
@@ -65,4 +67,4 @@ The synthesis will summarize evidence by policy feature, outcome domain, populat
 
 ## Automation Statement
 
-Automation is used for reproducible searching, metadata cleaning, deduplication, transparent relevance scoring, screening workbook setup, policy-source logging, evidence-table templating, and PRISMA-style count tracking. Automation does not make final include/exclude decisions. `records_marked_ineligible_by_automation` is set to `0` unless the reviewer later approves a specific automated exclusion rule.
+Automation is used for reproducible searching, metadata cleaning, deduplication, transparent relevance scoring, screening workbook setup, policy-source logging, evidence-table templating, validation sampling, and PRISMA-style count tracking. Automation-excluded title/abstract records are counted separately from human exclusions and require validation sampling. Final full-text inclusion decisions are made by human review.

@@ -10,6 +10,9 @@ policy_scan_terms:
   - postpartum Medicaid eligibility maternal health equity
   - 12-month postpartum Medicaid coverage maternal health access
   - Medicaid postpartum coverage continuity care equity
+main_automated_academic_source: PubMed
+exploratory_sources_not_in_main_prisma:
+  - OpenAlex
 record_volume_guidance:
   target_initial_candidates_before_deduplication: approximately 100-400 records
   potentially_too_narrow_threshold_combined_pubmed_openalex: 50

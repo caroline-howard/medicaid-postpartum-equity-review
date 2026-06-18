@@ -58,16 +58,11 @@ def main() -> None:
     end_year = config["date_range"]["end_year"]
     records, result_count = search_openalex(query, start_year, end_year)
     write_csv(pd.DataFrame(records), DATA / "raw" / "openalex_records.csv")
-    append_search_log(
-        {
-            "source": "OpenAlex",
-            "interface_api": "OpenAlex Works API",
-            "date_searched": today_iso(),
-            "exact_search_string": query,
-            "result_count": result_count,
-            "downloaded_count": len(records),
-            "notes": f"Date range limited to {start_year}-{end_year}; first 200 records downloaded.",
-        }
+    print(
+        "OpenAlex exploratory search complete. "
+        f"Reported matches: {result_count}; downloaded: {len(records)}. "
+        "Results were saved to data/raw/openalex_records.csv but were not appended "
+        "to the main PRISMA search log."
     )
 
 
