@@ -1,8 +1,12 @@
-academic_search_string: '(Medicaid OR CHIP) AND (postpartum OR "post-partum" OR pregnancy) AND (coverage OR eligibility OR extension OR "continuous coverage" OR churn OR redetermination) AND ("access to care" OR "continuity of care" OR morbidity OR mortality OR "behavioral health" OR equity OR disparities)'
+# Final PubMed search strategy selected after refinement testing.
+academic_search_string: '(Medicaid[Title/Abstract] OR CHIP[Title/Abstract]) AND (postpartum[Title/Abstract] OR post-partum[Title/Abstract] OR postnatal[Title/Abstract]) AND (coverage[Title/Abstract] OR eligibility[Title/Abstract] OR extension[Title/Abstract] OR "continuous coverage"[Title/Abstract] OR churn[Title/Abstract] OR redetermination[Title/Abstract])'
 date_range:
   start_year: 2014
   end_year: 2026
 geography: United States
+main_automated_academic_source: PubMed
+exploratory_sources_not_in_main_prisma:
+  - OpenAlex
 policy_scan_terms:
   - Medicaid postpartum coverage extension state plan amendment
   - Section 1115 postpartum waiver

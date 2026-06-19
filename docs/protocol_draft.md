@@ -20,13 +20,13 @@ Sources may include peer-reviewed studies, systematic reviews, policy reports, g
 
 ## Information Sources
 
-Academic records will be searched in PubMed and OpenAlex. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents.
+Academic records for the final main workflow will be searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents. OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
 ## Search Strategy
 
 Primary academic search string:
 
-`(Medicaid OR CHIP) AND (postpartum OR "post-partum" OR pregnancy) AND (coverage OR eligibility OR extension OR "continuous coverage" OR churn OR redetermination) AND ("access to care" OR "continuity of care" OR morbidity OR mortality OR "behavioral health" OR equity OR disparities)`
+`(Medicaid[Title/Abstract] OR CHIP[Title/Abstract]) AND (postpartum[Title/Abstract] OR post-partum[Title/Abstract] OR postnatal[Title/Abstract]) AND (coverage[Title/Abstract] OR eligibility[Title/Abstract] OR extension[Title/Abstract] OR "continuous coverage"[Title/Abstract] OR churn[Title/Abstract] OR redetermination[Title/Abstract])`
 
 Policy scan terms:
 
@@ -46,7 +46,7 @@ All candidate records remain available for human screening. Automated relevance 
 There is no required number of included studies. Final inclusion depends on eligibility criteria and human screening decisions. Practical targets are used only to assess search calibration:
 
 - Approximately 100-400 initial candidate records before deduplication is a useful target.
-- Fewer than 50 records across PubMed and OpenAlex combined should be flagged as potentially too narrow.
+- Fewer than 50 PubMed records should be flagged as potentially too narrow.
 - More than 750 records should be flagged as potentially too broad.
 - A feasible portfolio systematic review often includes approximately 10-25 core evidence sources, plus separately labeled policy/context sources when relevant.
 - Records must not be excluded or included merely to hit a target number.

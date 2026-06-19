@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import pandas as pd
 import requests
 
-from common import CONFIG, DATA, append_search_log, ensure_dirs, read_yaml, today_iso, write_csv
+from common import CONFIG, DATA, ensure_dirs, read_yaml, today_iso, write_csv
 
 
 EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
@@ -84,6 +84,40 @@ def fetch_pubmed(pmids: list[str]) -> list[dict]:
                 "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else "",
             }
         )
+    for article in root.findall(".//PubmedBookArticle"):
+        document = article.find("BookDocument")
+        book = document.find("Book") if document is not None else None
+        pmid = text_at(document, "PMID")
+        title = text_at(document, "ArticleTitle") or text_at(book, "BookTitle")
+        abstract = list_text(document, "Abstract/AbstractText")
+        year = text_at(book, "PubDate/Year")
+        journal = text_at(book, "BookTitle")
+        publisher = text_at(book, "Publisher/PublisherName")
+        authors = []
+        for author in article.findall(".//Author"):
+            last = text_at(author, "LastName")
+            fore = text_at(author, "ForeName")
+            collective = text_at(author, "CollectiveName")
+            authors.append(" ".join([fore, last]).strip() or collective)
+        doi = ""
+        for article_id in document.findall("ArticleIdList/ArticleId") if document is not None else []:
+            if article_id.attrib.get("IdType") == "doi":
+                doi = article_id.text or ""
+        records.append(
+            {
+                "source_database": "PubMed",
+                "pmid": pmid,
+                "title": title,
+                "abstract": abstract,
+                "journal": journal or publisher,
+                "year": year,
+                "publication_types": "PubMed book/report",
+                "authors": "; ".join(authors),
+                "doi": doi,
+                "mesh_terms": "",
+                "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else "",
+            }
+        )
     return records
 
 
@@ -97,16 +131,21 @@ def main() -> None:
     time.sleep(0.34)
     records = fetch_pubmed(pmids)
     write_csv(pd.DataFrame(records), DATA / "raw" / "pubmed_records.csv")
-    append_search_log(
-        {
-            "source": "PubMed",
-            "interface_api": "NCBI E-utilities",
-            "date_searched": today_iso(),
-            "exact_search_string": query,
-            "result_count": result_count,
-            "downloaded_count": len(records),
-            "notes": f"Date range limited to {start_year}-{end_year}; retmax 500.",
-        }
+    write_csv(
+        pd.DataFrame(
+            [
+                {
+                    "source": "PubMed",
+                    "interface_api": "NCBI E-utilities",
+                    "date_searched": today_iso(),
+                    "exact_search_string": query,
+                    "result_count": result_count,
+                    "downloaded_count": len(records),
+                    "notes": f"Final main automated bibliographic database search; date range limited to {start_year}-{end_year}; retmax 500.",
+                }
+            ]
+        ),
+        DATA / "outputs" / "search_log.csv",
     )
 
 

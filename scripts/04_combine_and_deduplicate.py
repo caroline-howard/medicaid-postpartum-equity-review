@@ -63,8 +63,9 @@ def merge_group(group: pd.DataFrame, record_number: int) -> dict:
 def main() -> None:
     ensure_dirs()
     pubmed = load_source(DATA / "raw" / "pubmed_records.csv", "PubMed")
-    openalex = load_source(DATA / "raw" / "openalex_records.csv", "OpenAlex")
-    combined = pd.concat([pubmed, openalex], ignore_index=True, sort=False).fillna("")
+    # PubMed is the only automated academic database source retained for the
+    # final main PRISMA workflow. OpenAlex is exploratory only.
+    combined = pubmed.copy().fillna("")
     if combined.empty:
         write_csv(pd.DataFrame(columns=CANONICAL_COLUMNS), DATA / "processed" / "all_records_combined.csv")
         write_csv(pd.DataFrame(columns=CANONICAL_COLUMNS), DATA / "processed" / "deduplicated_records.csv")

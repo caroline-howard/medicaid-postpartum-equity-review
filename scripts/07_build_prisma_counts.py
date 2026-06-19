@@ -45,9 +45,9 @@ def volume_flag(records_identified: int) -> tuple[str, str]:
     narrow = int(guidance.get("potentially_too_narrow_threshold_combined_pubmed_openalex", 50))
     broad = int(guidance.get("potentially_too_broad_threshold_combined_pubmed_openalex", 750))
     if records_identified < narrow:
-        return "potentially_too_narrow", "Fewer than 50 PubMed and OpenAlex records combined; consider broader search terms."
+        return "potentially_too_narrow", "Fewer than 50 PubMed records retrieved for the main search; consider broader search terms."
     if records_identified > broad:
-        return "potentially_too_broad", "More than 750 PubMed and OpenAlex records combined; consider narrower terms or additional filters."
+        return "potentially_too_broad", "More than 750 PubMed records retrieved for the main search; consider narrower terms or additional filters."
     return "within_practical_check_range", "Use targets only as quality checks; final inclusion depends on documented human decisions."
 
 
@@ -60,7 +60,11 @@ def main() -> None:
     full_text = read_csv_if_exists(DATA / "manual" / "full_text_review.csv")
     evidence = read_csv_if_exists(DATA / "outputs" / "evidence_table.csv")
 
-    records_identified = int(pd.to_numeric(search_log.get("downloaded_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum())
+    if "source" in search_log.columns:
+        main_search_log = search_log[search_log["source"].fillna("").astype(str).str.lower().eq("pubmed")]
+    else:
+        main_search_log = search_log
+    records_identified = int(pd.to_numeric(main_search_log.get("downloaded_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum())
     screened = len(screening) if not screening.empty else len(deduped)
     full_text_decisions = full_text.get("human_full_text_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
     exclusion_reasons = full_text.get("full_text_exclusion_reason", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
