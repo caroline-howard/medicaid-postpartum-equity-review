@@ -8,6 +8,8 @@
 
 OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
+This repository supports an in-progress systematic review portfolio paper titled "State Adoption and Implementation of Twelve-Month Postpartum Medicaid Coverage Extensions After the American Rescue Plan Act: A Systematic Review." PubMed is the main automated academic database source, and the final PubMed search uses Strategy E. OpenAlex was exploratory only and is not part of the final PRISMA workflow.
+
 ## Exact Academic Search String
 
 `(Medicaid[Title/Abstract] OR CHIP[Title/Abstract]) AND (postpartum[Title/Abstract] OR post-partum[Title/Abstract] OR postnatal[Title/Abstract]) AND (coverage[Title/Abstract] OR eligibility[Title/Abstract] OR extension[Title/Abstract] OR "continuous coverage"[Title/Abstract] OR churn[Title/Abstract] OR redetermination[Title/Abstract])`
@@ -56,7 +58,7 @@ The script writes the raw group hit counts (`medicaid_chip_hits`, `postpartum_hi
 
 ## Screening Process
 
-Human reviewers complete title/abstract screening in `data/manual/screening_decisions.csv`. Allowed title/abstract decisions are:
+Human reviewers complete title/abstract screening in `data/manual/screening_decisions.csv`. Initial broad title/abstract screening has been completed for 211 records. Allowed first-pass title/abstract decisions are:
 
 - `include_for_full_text`
 - `maybe`
@@ -74,6 +76,44 @@ Allowed exclusion reasons are:
 - `opinion_without_data_or_policy_detail`
 - `duplicate`
 - `other`
+
+Completed title/abstract screening results were:
+
+- `include_for_full_text`: 136
+- `maybe`: 30
+- `exclude`: 45
+
+Exclusion reasons for excluded records were:
+
+- `wrong_policy_or_intervention`: 19
+- `not_medicaid_or_chip`: 10
+- `not_postpartum`: 9
+- `wrong_population`: 3
+- `opinion_without_data_or_policy_detail`: 2
+- `duplicate`: 1
+- `not_us_based`: 1
+
+The 166 records marked `include_for_full_text` or `maybe` are eligible for a second-pass narrowed screen before full-text review. This narrowed screen focuses on direct relevance to post-2021 state adoption and implementation of 12-month postpartum Medicaid coverage extensions after the American Rescue Plan Act. Narrowed second-pass decisions are stored in `narrowed_screening_decision`, with allowed values:
+
+- `retain_for_full_text`
+- `background_only`
+- `exclude_after_narrowing`
+- `unsure_second_pass`
+
+Allowed narrowed screening reasons are:
+
+- `directly_about_12_month_postpartum_medicaid_extension`
+- `state_adoption_or_implementation`
+- `access_or_continuity_outcome`
+- `equity_or_disparity_relevance`
+- `broad_maternal_health_policy_only`
+- `not_12_month_extension`
+- `not_post_2021_relevant`
+- `not_medicaid_postpartum_policy`
+- `background_context_only`
+- `other`
+
+No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for records retained after narrowing.
 
 ## Full-Text Review
 

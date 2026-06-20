@@ -46,11 +46,19 @@ Allowed title/abstract decisions: `include_for_full_text`, `maybe`, `exclude`.
 
 Allowed exclusion reasons: `wrong_population`, `wrong_policy_or_intervention`, `not_medicaid_or_chip`, `not_postpartum`, `not_us_based`, `no_relevant_outcome`, `background_only`, `opinion_without_data_or_policy_detail`, `duplicate`, `other`.
 
+Narrowed second-pass screening columns preserve the original title/abstract decisions while allowing the review scope to be narrowed before full-text review:
+
+- `narrowed_screening_decision`: Allowed values are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`.
+- `narrowed_screening_reason`: Allowed values are `directly_about_12_month_postpartum_medicaid_extension`, `state_adoption_or_implementation`, `access_or_continuity_outcome`, `equity_or_disparity_relevance`, `broad_maternal_health_policy_only`, `not_12_month_extension`, `not_post_2021_relevant`, `not_medicaid_postpartum_policy`, `background_context_only`, and `other`.
+- `narrowed_notes`: Free-text notes for second-pass screening.
+
 ## `data/manual/full_text_review.csv`
 
 Human full-text review file.
 
 Allowed full-text decisions: `include_core_evidence`, `include_policy_context`, `background_only`, `exclude`.
+
+Before narrowed screening is complete, this file may retain the broader record structure. After narrowed screening is complete, it should be filtered to records marked `retain_for_full_text`.
 
 ## `data/outputs/evidence_table.csv`
 

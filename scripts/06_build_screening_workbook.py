@@ -31,6 +31,26 @@ EXCLUSION_REASON_OPTIONS = [
     "other",
 ]
 
+NARROWED_DECISION_OPTIONS = [
+    "retain_for_full_text",
+    "background_only",
+    "exclude_after_narrowing",
+    "unsure_second_pass",
+]
+
+NARROWED_REASON_OPTIONS = [
+    "directly_about_12_month_postpartum_medicaid_extension",
+    "state_adoption_or_implementation",
+    "access_or_continuity_outcome",
+    "equity_or_disparity_relevance",
+    "broad_maternal_health_policy_only",
+    "not_12_month_extension",
+    "not_post_2021_relevant",
+    "not_medicaid_postpartum_policy",
+    "background_context_only",
+    "other",
+]
+
 SCREENING_COLUMNS = [
     "record_id",
     "title",
@@ -47,6 +67,9 @@ SCREENING_COLUMNS = [
     "human_title_abstract_exclusion_reason",
     "full_text_needed",
     "notes",
+    "narrowed_screening_decision",
+    "narrowed_screening_reason",
+    "narrowed_notes",
 ]
 
 PRESERVE_SCREENING_COLUMNS = [
@@ -54,6 +77,9 @@ PRESERVE_SCREENING_COLUMNS = [
     "human_title_abstract_exclusion_reason",
     "full_text_needed",
     "notes",
+    "narrowed_screening_decision",
+    "narrowed_screening_reason",
+    "narrowed_notes",
 ]
 
 FULL_TEXT_COLUMNS = [
@@ -65,6 +91,9 @@ FULL_TEXT_COLUMNS = [
     "full_text_exclusion_reason",
     "study_or_report_type",
     "include_in_evidence_table",
+    "narrowed_screening_decision",
+    "narrowed_screening_reason",
+    "narrowed_notes",
     "notes",
 ]
 
@@ -84,6 +113,9 @@ COLUMN_WIDTHS = {
     "human_title_abstract_exclusion_reason": 42,
     "full_text_needed": 18,
     "notes": 40,
+    "narrowed_screening_decision": 32,
+    "narrowed_screening_reason": 44,
+    "narrowed_notes": 44,
 }
 
 
@@ -215,6 +247,22 @@ def main() -> None:
         worksheet.add_data_validation(validation)
         validation.add(f"{column_letter}2:{column_letter}{worksheet.max_row}")
 
+    if "narrowed_screening_decision" in header_to_index:
+        column_letter = get_column_letter(header_to_index["narrowed_screening_decision"])
+        validation = DataValidation(type="list", formula1=validation_formula(NARROWED_DECISION_OPTIONS), allow_blank=True)
+        validation.error = "Choose a valid narrowed screening decision."
+        validation.errorTitle = "Invalid narrowed decision"
+        worksheet.add_data_validation(validation)
+        validation.add(f"{column_letter}2:{column_letter}{worksheet.max_row}")
+
+    if "narrowed_screening_reason" in header_to_index:
+        column_letter = get_column_letter(header_to_index["narrowed_screening_reason"])
+        validation = DataValidation(type="list", formula1=validation_formula(NARROWED_REASON_OPTIONS), allow_blank=True)
+        validation.error = "Choose a valid narrowed screening reason."
+        validation.errorTitle = "Invalid narrowed reason"
+        worksheet.add_data_validation(validation)
+        validation.add(f"{column_letter}2:{column_letter}{worksheet.max_row}")
+
     guide = workbook.create_sheet("Screening Guide")
     guide_rows = [
         ("Decision", "Use When"),
@@ -225,6 +273,7 @@ def main() -> None:
         ("maybe", "The record might fit, but the title/abstract is unclear."),
         ("exclude", "The record clearly fails review scope. Every exclude must have an exclusion reason."),
         ("Screening order", "Screen highest relevance_score records first, then review the remaining records for obvious exclusions or hidden relevant papers."),
+        ("Second-pass scope", "After first-pass screening, include_for_full_text and maybe records are screened again for the narrowed post-2021 state 12-month postpartum Medicaid extension scope."),
     ]
     for row in guide_rows:
         guide.append(row)

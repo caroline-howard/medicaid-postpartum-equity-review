@@ -1,6 +1,6 @@
 # Screening Validation Report
 
-Generated: 2026-06-20T09:45:46
+Generated: 2026-06-20T14:34:33
 Status: PASS
 
 ## Record Counts
@@ -12,24 +12,24 @@ Status: PASS
 
 ## Decision Counts
 
-- (blank): 211
-- include_for_full_text: 0
-- maybe: 0
-- exclude: 0
+- (blank): 0
+- include_for_full_text: 136
+- maybe: 30
+- exclude: 45
 
 ## Exclusion Reason Counts
 
-- (blank): 211
+- (blank): 166
 - background_only: 0
-- duplicate: 0
+- duplicate: 1
 - no_relevant_outcome: 0
-- not_medicaid_or_chip: 0
-- not_postpartum: 0
-- not_us_based: 0
-- opinion_without_data_or_policy_detail: 0
+- not_medicaid_or_chip: 10
+- not_postpartum: 9
+- not_us_based: 1
+- opinion_without_data_or_policy_detail: 2
 - other: 0
-- wrong_policy_or_intervention: 0
-- wrong_population: 0
+- wrong_policy_or_intervention: 19
+- wrong_population: 3
 
 ## Checks
 
@@ -38,7 +38,3 @@ Status: PASS
 - PASS: All completed decisions are valid.
 - PASS: Every excluded record has an exclusion reason.
 - PASS: Include/maybe records do not have exclusion reasons filled in.
-
-## Warnings
-
-- 211 records do not yet have a human title/abstract decision.

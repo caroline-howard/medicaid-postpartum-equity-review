@@ -1,6 +1,6 @@
-# Medicaid Postpartum Coverage & Maternal Health Equity Systematic Review
+# State Adoption and Implementation of Twelve-Month Postpartum Medicaid Coverage Extensions After the American Rescue Plan Act
 
-This repository supports a reproducible PRISMA 2020-style systematic review pipeline for a portfolio paper on Medicaid postpartum coverage extensions, access to care, continuity of coverage, and maternal health equity in the United States.
+This repository supports a reproducible PRISMA 2020-style systematic review pipeline for a portfolio paper on state adoption and implementation of 12-month postpartum Medicaid coverage extensions after the American Rescue Plan Act.
 
 The main PRISMA workflow retrieves candidate academic records from PubMed, enriches metadata with Crossref when needed, deduplicates records, applies transparent relevance scoring, prepares human screening files, tracks policy/context sources, and builds PRISMA-style count outputs. It does not make final scholarly inclusion decisions.
 
@@ -40,6 +40,7 @@ python scripts/07_build_prisma_counts.py
 - `data/outputs/prisma_counts.csv`: PRISMA-style count summary.
 - `data/outputs/search_log.csv`: reproducible source-level search log.
 - `data/outputs/screening_validation_report.md`: validation report for completed title/abstract screening decisions.
+- `data/outputs/narrowed_screening_summary.md`: status summary for the narrowed second-pass screening workflow.
 
 ## Human Review Required
 
@@ -51,7 +52,35 @@ There is no required number of final included studies. Final inclusion depends o
 
 OpenAlex was explored during development but is not retained in the final main search workflow because it produced an overly broad result set.
 
+## Current Paper Status
+
+This is an in-progress systematic review portfolio paper. The final scope is state adoption and implementation of 12-month postpartum Medicaid coverage extensions after the American Rescue Plan Act. The research question is: How has state adoption of 12-month postpartum Medicaid coverage extensions after 2021 been studied in relation to postpartum access, coverage continuity, and equity?
+
+The final academic database search uses PubMed Strategy E, with PubMed as the main automated academic database source. OpenAlex was exploratory only and is not part of the final PRISMA workflow.
+
+Title/abstract screening has been completed for 211 PubMed records. Screening results were:
+
+- `include_for_full_text`: 136
+- `maybe`: 30
+- `exclude`: 45
+
+Exclusion reasons for the 45 excluded records were:
+
+- `wrong_policy_or_intervention`: 19
+- `not_medicaid_or_chip`: 10
+- `not_postpartum`: 9
+- `wrong_population`: 3
+- `opinion_without_data_or_policy_detail`: 2
+- `duplicate`: 1
+- `not_us_based`: 1
+
+A total of 166 records were marked `include_for_full_text` or `maybe` in the initial broad screen. Before full-text review, the scope was narrowed to records that directly address post-2021 state adoption or implementation of 12-month postpartum Medicaid coverage extensions. These 166 records now require second-pass narrowed screening.
+
+No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for records retained after narrowing.
+
 ## Title/Abstract Screening
+
+Initial broad title/abstract screening is complete. The original decisions are preserved in `human_title_abstract_decision` and `human_title_abstract_exclusion_reason`.
 
 Use the local browser screening app for human title/abstract screening:
 
@@ -76,6 +105,18 @@ After title/abstract decisions are complete and validated, rerun:
 ```bash
 python scripts/07_build_prisma_counts.py
 ```
+
+## Narrowed Second-Pass Screening
+
+Before full-text review, use the narrowed screening app to review only the 166 records marked `include_for_full_text` or `maybe` in the initial broad screen:
+
+```bash
+streamlit run scripts/11_narrowed_screening_app.py
+```
+
+The narrowed app reads from and saves directly back to `data/manual/screening_decisions.csv`. It fills only the second-pass columns: `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes`.
+
+Allowed narrowed decisions are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`. Full-text review should not be narrowed to retained records until second-pass screening is complete.
 
 ## PRISMA 2020 Support
 

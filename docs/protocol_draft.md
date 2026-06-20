@@ -2,27 +2,29 @@
 
 ## Title
 
-Medicaid Postpartum Coverage & Maternal Health Equity Systematic Review - Portfolio Paper
+State Adoption and Implementation of Twelve-Month Postpartum Medicaid Coverage Extensions After the American Rescue Plan Act: A Systematic Review
 
 ## Background And Rationale
 
-Postpartum Medicaid coverage policies may affect access to care, continuity of insurance, behavioral health treatment, care coordination, and maternal health equity. Recent state and federal policy changes extending postpartum Medicaid eligibility create a need to synthesize evidence on coverage continuity and outcomes for low-income and medically vulnerable postpartum populations.
+The American Rescue Plan Act created a pathway for states to extend Medicaid and CHIP postpartum coverage to 12 months. State adoption and implementation of these extensions may affect postpartum access, coverage continuity, insurance churn, behavioral health access, postpartum care utilization, and equity for low-income and medically vulnerable postpartum populations. This portfolio systematic review narrows the original broader screening set to focus specifically on post-2021 state adoption and implementation of 12-month postpartum Medicaid coverage extensions.
 
 ## Research Question
 
-How do Medicaid postpartum coverage extensions relate to maternal health access, continuity of care, and health equity for low-income and medically vulnerable postpartum populations?
+How has state adoption of 12-month postpartum Medicaid coverage extensions after 2021 been studied in relation to postpartum access, coverage continuity, and equity?
 
 ## Eligibility Criteria
 
-Eligible sources focus on postpartum people covered by Medicaid/CHIP or affected by Medicaid postpartum eligibility or coverage policies in the United States from 2014 through 2026. Eligible policy/intervention topics include Medicaid postpartum coverage extensions, 12-month postpartum coverage, state plan amendments, Section 1115 waivers, eligibility continuity, redetermination, and insurance churn. Eligible outcomes include access to care, postpartum visit completion, continuity of coverage, behavioral health access, maternal morbidity, emergency department use, care coordination, and equity implications.
+For the narrowed final scope, eligible sources should directly address state adoption or implementation of 12-month postpartum Medicaid or CHIP coverage extensions after 2021. Relevant policy/intervention topics include 12-month postpartum coverage, extended postpartum eligibility, continuous postpartum coverage, Section 1115 waivers, state plan amendments, American Rescue Plan Act implementation, post-2021 state adoption, redetermination, and insurance churn. Eligible outcomes or analytic connections include postpartum access, coverage continuity, insurance churn, redetermination, behavioral health access, postpartum care utilization, equity, disparities, rural access, low-income populations, or medically vulnerable postpartum populations.
 
-Sources may include peer-reviewed studies, systematic reviews, policy reports, government sources, state policy documents, and professional association sources. Sources may be excluded for wrong population, wrong policy/intervention, not Medicaid/CHIP, not postpartum, not U.S.-based, no relevant outcome, background-only relevance, opinion without data or policy detail, duplicate status, or other documented reasons.
+Sources may include peer-reviewed studies, systematic reviews, policy reports, government sources, state policy documents, and professional association sources. Sources may be downgraded or excluded in the narrowed second-pass screen if they focus on general maternal mortality or morbidity without 12-month postpartum Medicaid extension policy, postpartum care without Medicaid/CHIP coverage policy, Medicaid expansion generally without postpartum extension, broad maternal health legislation where postpartum Medicaid extension is only a minor mention, clinical postpartum outcomes without coverage or policy relevance, pre-2021 policy context not relevant to later 12-month extension policy, or opinion without useful policy detail or evidence.
 
 ## Information Sources
 
-Academic records for the final main workflow will be searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents. OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
+Academic records for the final main workflow were searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context is tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents. OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
 ## Search Strategy
+
+The final academic database strategy is PubMed Strategy E, with PubMed as the main automated academic database source. OpenAlex was exploratory only and is not part of the final PRISMA workflow.
 
 Primary academic search string:
 
@@ -40,6 +42,12 @@ Policy scan terms:
 ## Selection Process
 
 All candidate records remain available for human screening. Automated relevance scoring may suggest `likely_include`, `maybe`, or `likely_exclude`, but these suggestions are not formal exclusion decisions. A human reviewer completes title/abstract screening and full-text eligibility review using the manual CSV files.
+
+Initial broad title/abstract screening has been completed for 211 records. Screening results were `include_for_full_text` for 136 records, `maybe` for 30 records, and `exclude` for 45 records. Exclusion reasons were `wrong_policy_or_intervention` (19), `not_medicaid_or_chip` (10), `not_postpartum` (9), `wrong_population` (3), `opinion_without_data_or_policy_detail` (2), `duplicate` (1), and `not_us_based` (1). The original first-pass screening decisions are preserved for transparency.
+
+The 166 records marked `include_for_full_text` or `maybe` are eligible for a second-pass narrowed screen before full-text review. The second-pass screen uses `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes` to classify records as `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, or `unsure_second_pass`.
+
+No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for retained records.
 
 ## Record Volume Quality Checks
 
@@ -61,7 +69,7 @@ A formal risk-of-bias or quality-appraisal approach should be selected after the
 
 ## Synthesis Plan
 
-The synthesis will summarize evidence by policy feature, outcome domain, population, state or national scope, study/report type, and equity relevance. Policy/context sources should be labeled separately from core evidence sources.
+The synthesis will summarize evidence by state adoption or implementation feature, outcome domain, population, state or national scope, study/report type, and equity relevance. Policy/context sources should be labeled separately from core evidence sources.
 
 ## Automation Statement
 
