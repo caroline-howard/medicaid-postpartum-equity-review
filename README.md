@@ -51,11 +51,19 @@ OpenAlex was explored during development but is not retained in the final main s
 
 ## Title/Abstract Screening
 
-Open `data/manual/screening_decisions.xlsx` for human title/abstract screening. Fill in `human_title_abstract_decision` for each record using `include_for_full_text`, `maybe`, or `exclude`. Add `human_title_abstract_exclusion_reason` only for records marked `exclude`.
+Use the local browser screening app for human title/abstract screening:
+
+```bash
+streamlit run scripts/10_screening_app.py
+```
+
+The app reads from and saves directly back to `data/manual/screening_decisions.csv`. Review one record at a time, fill in `human_title_abstract_decision` using `include_for_full_text`, `maybe`, or `exclude`, and add `human_title_abstract_exclusion_reason` only for records marked `exclude`. The app requires an exclusion reason before saving an excluded record.
+
+If you prefer a spreadsheet workflow and have compatible software, open `data/manual/screening_decisions.xlsx` for the same title/abstract screening fields.
 
 The workbook is sorted by `relevance_score` from highest to lowest, with filters, frozen headers, wrapped title/abstract text, and dropdowns for valid decisions and exclusion reasons. The screening rules are documented in `docs/title_abstract_screening_guide.md`.
 
-Before rerunning PRISMA counts, save completed screening changes back to `data/manual/screening_decisions.csv`, then validate the CSV:
+Before rerunning PRISMA counts, validate the CSV:
 
 ```bash
 python scripts/09_validate_screening_decisions.py
