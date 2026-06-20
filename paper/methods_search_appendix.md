@@ -36,6 +36,24 @@ The combined file, deduplicated file, and duplicate-record file are saved separa
 
 Automation retrieves records, cleans metadata, deduplicates records, scores relevance, prepares screening files, and builds PRISMA-style count outputs. No records are excluded by automation in the final Strategy E workflow. `records_marked_ineligible_by_automation` remains `0`.
 
+## Relevance Scoring Logic
+
+Relevance scores are used only to sort and triage records for human title/abstract screening. They do not determine inclusion or exclusion, and no record is removed on the basis of score.
+
+The scoring logic is implemented in `scripts/05_score_relevance.py`. For each deduplicated record, the script concatenates the title and abstract, normalizes the text to lowercase alphanumeric tokens, and searches for terms in five keyword groups:
+
+| Keyword group | Terms |
+| --- | --- |
+| `medicaid_chip` | `medicaid`, `chip`, `children health insurance`, `children s health insurance` |
+| `postpartum` | `postpartum`, `post partum`, `postnatal`, `pregnancy`, `pregnant`, `maternal`, `after delivery`, `after childbirth` |
+| `coverage_policy` | `coverage`, `eligibility`, `extension`, `continuous coverage`, `churn`, `redetermination`, `waiver`, `state plan`, `section 1115`, `insurance continuity` |
+| `outcomes` | `access`, `continuity`, `behavioral health`, `morbidity`, `mortality`, `equity`, `disparities`, `postpartum visit`, `emergency department`, `ed use`, `care coordination` |
+| `us_state_policy` | `united states`, `u s`, `state`, `medicaid agency`, `section 1115`, `cms`, `federal`, `county` |
+
+For each group, the script counts the number of group terms found in the normalized title/abstract text. Points for each group are capped at 3, using `min(group_hits, 3)`. The final `relevance_score` is the sum of capped points across the five groups, so the maximum possible score is 15.
+
+The script writes the raw group hit counts (`medicaid_chip_hits`, `postpartum_hits`, `coverage_policy_hits`, `outcomes_hits`, and `us_state_policy_hits`) plus the final `relevance_score` to `data/processed/scored_records.csv`. It also writes `automation_suggestion` as a triage label: `likely_include` for scores of 8 or higher, `maybe` for scores from 4 to 7, and `likely_exclude` for scores below 4. These labels are not screening decisions.
+
 ## Screening Process
 
 Human reviewers complete title/abstract screening in `data/manual/screening_decisions.csv`. Allowed title/abstract decisions are:

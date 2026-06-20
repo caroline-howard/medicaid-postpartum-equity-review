@@ -45,6 +45,8 @@ python scripts/07_build_prisma_counts.py
 
 Automation keeps all candidate records available for human screening. Human reviewers must complete title/abstract decisions, full-text eligibility decisions, evidence extraction, and final synthesis inclusion decisions. The automated `automation_suggestion` field is only a triage aid.
 
+Relevance scoring is documented in `paper/methods_search_appendix.md` and implemented in `scripts/05_score_relevance.py`. Scores are calculated from transparent keyword-group hits in the title and abstract, with each group capped at 3 points. Scores are used only to prioritize human screening order.
+
 There is no required number of final included studies. Final inclusion depends on eligibility criteria and documented human screening decisions. Practical record-volume targets are used only as quality checks: approximately 100-400 PubMed candidate records before deduplication is a useful initial target; fewer than 50 PubMed records should be flagged as potentially too narrow; more than 750 should be flagged as potentially too broad; and a feasible portfolio systematic review often has about 10-25 core evidence sources plus separately labeled policy/context sources.
 
 OpenAlex was explored during development but is not retained in the final main search workflow because it produced an overly broad result set.

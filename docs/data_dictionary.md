@@ -28,13 +28,15 @@
 
 Includes deduplicated record fields plus transparent relevance-score components:
 
-- `medicaid_chip_hits`
-- `postpartum_hits`
-- `coverage_policy_hits`
-- `outcomes_hits`
-- `us_state_policy_hits`
-- `relevance_score`
-- `automation_suggestion`
+- `medicaid_chip_hits`: Number of matched Medicaid/CHIP terms in the normalized title and abstract.
+- `postpartum_hits`: Number of matched postpartum, pregnancy, or maternal terms in the normalized title and abstract.
+- `coverage_policy_hits`: Number of matched coverage, eligibility, extension, churn, waiver, state plan, or related policy terms in the normalized title and abstract.
+- `outcomes_hits`: Number of matched access, continuity, behavioral health, morbidity, mortality, equity, disparities, utilization, or care coordination terms in the normalized title and abstract.
+- `us_state_policy_hits`: Number of matched United States, state, federal, CMS, county, or Medicaid agency context terms in the normalized title and abstract.
+- `relevance_score`: Sum of capped group points from the five keyword groups. Each group contributes `min(hits, 3)` points, so the maximum possible score is 15.
+- `automation_suggestion`: Triage label based only on `relevance_score`: `likely_include` for scores of 8 or higher, `maybe` for scores from 4 to 7, and `likely_exclude` for scores below 4. This is not a screening decision.
+
+The exact scoring terms and implementation are documented in `paper/methods_search_appendix.md` and implemented in `scripts/05_score_relevance.py`.
 
 ## `data/manual/screening_decisions.csv`
 
