@@ -1,30 +1,38 @@
 # Title/Abstract Screening Guide
 
-## Automation Tiers
+This guide supports human screening for the Medicaid Postpartum Coverage & Maternal Health Equity Systematic Review. PubMed is the only automated academic database source in the main PRISMA workflow, and the final Strategy E search produced 211 records for title/abstract screening.
 
-- `tier_1_likely_include`: Contains all core concepts. Screen these first.
-- `tier_2_maybe`: Contains Medicaid/CHIP and postpartum/pregnancy concepts but is missing one adjacent concept. Screen these after tier 1.
-- `tier_3_likely_exclude`: Missing multiple core concepts. Check quickly if time allows.
-- `tier_4_obvious_exclude`: Clear automation exclusion candidate.
+Do not make inclusion or exclusion decisions to reach a target number of studies. Final inclusion depends on the documented screening and full-text eligibility process.
 
-## What `automation_exclude` Means
+## Decision Rules
 
-`automation_exclude` means the rule-based script found that the record clearly lacked one or more required core concepts. It is not a human screening decision. These records are counted separately as `records_marked_ineligible_by_automation` in PRISMA counts.
+### include_for_full_text
 
-## Screening Order
+Use `include_for_full_text` when the title/abstract suggests the record may address Medicaid/CHIP, postpartum or postnatal care, coverage/eligibility/extension/continuity/churn/redetermination, and at least one relevant access, care continuity, utilization, behavioral health, morbidity, or equity outcome.
 
-Start with `tier_1_likely_include`, then `tier_2_maybe`. If time allows, skim `tier_3_likely_exclude` for any record that should be rescued. Do not treat tier 3 as automatically excluded.
+### maybe
 
-## Validation Sample
+Use `maybe` when the record might fit but the title/abstract is unclear.
 
-Review `data/manual/automation_exclusion_validation_sample.csv`. For each sampled record, set `human_validation_decision` to:
+### exclude
 
-- `confirm_exclude`
-- `rescue_for_manual_screening`
-- `unsure`
+Use `exclude` when the record clearly fails the review scope. Every `exclude` decision must have a `human_title_abstract_exclusion_reason`.
 
-Use `human_validation_notes` to document why the automation was correct or wrong.
+Valid exclusion reasons are:
 
-## Rescuing A Record
+- `wrong_population`
+- `wrong_policy_or_intervention`
+- `not_medicaid_or_chip`
+- `not_postpartum`
+- `not_us_based`
+- `no_relevant_outcome`
+- `background_only`
+- `opinion_without_data_or_policy_detail`
+- `duplicate`
+- `other`
 
-If an `automation_exclude` record appears relevant, change `human_title_abstract_decision` in `data/manual/screening_decisions.csv` from `automation_exclude` to `maybe` or `include_for_full_text`, clear or revise the exclusion reason, and note that the record was rescued during validation. Then rerun `scripts/07_build_prisma_counts.py`.
+## Recommended Screening Order
+
+Screen highest `relevance_score` records first. Use `include_for_full_text` when the record is clearly relevant, use `maybe` when uncertain, and use `exclude` only when the reason is clear.
+
+After high-score records, screen the remaining records quickly for obvious exclusions or hidden relevant papers.

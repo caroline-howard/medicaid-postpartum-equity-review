@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import requests
 
-from common import CONFIG, DATA, append_search_log, ensure_dirs, join_values, read_yaml, today_iso, write_csv
+from common import CONFIG, DATA, ensure_dirs, join_values, read_yaml, write_csv
 
 
 def inverted_index_to_text(index: dict | None) -> str:

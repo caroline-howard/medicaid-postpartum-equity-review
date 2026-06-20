@@ -33,7 +33,6 @@ def load_source(path, source_name: str) -> pd.DataFrame:
     for column in CANONICAL_COLUMNS:
         if column not in df.columns and column != "record_id":
             df[column] = ""
-    df["source_databases_found"] = df["source_databases_found"].replace("", source_name)
     return df
 
 
@@ -65,8 +64,7 @@ def main() -> None:
     ensure_dirs()
     pubmed = load_source(DATA / "raw" / "pubmed_records.csv", "PubMed")
     # PubMed is the only automated academic database source retained for the
-    # main PRISMA workflow. OpenAlex may remain as an exploratory raw file, but
-    # it is intentionally not included in screening or PRISMA counts.
+    # final main PRISMA workflow. OpenAlex is exploratory only.
     combined = pubmed.copy().fillna("")
     if combined.empty:
         write_csv(pd.DataFrame(columns=CANONICAL_COLUMNS), DATA / "processed" / "all_records_combined.csv")

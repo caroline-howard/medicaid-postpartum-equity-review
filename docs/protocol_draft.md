@@ -20,15 +20,13 @@ Sources may include peer-reviewed studies, systematic reviews, policy reports, g
 
 ## Information Sources
 
-Academic records for the main PRISMA workflow will be searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents.
-
-OpenAlex was tested during development but is not retained in the final main search workflow because the query returned an overly broad result set. OpenAlex records are not treated as part of the final PRISMA search unless explicitly approved later.
+Academic records for the final main workflow will be searched in PubMed. Crossref may be used for metadata enrichment. Policy and gray-literature context will be tracked manually from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, the Commonwealth Fund, and state Medicaid documents. OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
 ## Search Strategy
 
 Primary academic search string:
 
-`(Medicaid OR CHIP) AND (postpartum OR "post-partum" OR pregnancy) AND (coverage OR eligibility OR extension OR "continuous coverage" OR churn OR redetermination) AND ("access to care" OR "continuity of care" OR morbidity OR mortality OR "behavioral health" OR equity OR disparities)`
+`(Medicaid[Title/Abstract] OR CHIP[Title/Abstract]) AND (postpartum[Title/Abstract] OR post-partum[Title/Abstract] OR postnatal[Title/Abstract]) AND (coverage[Title/Abstract] OR eligibility[Title/Abstract] OR extension[Title/Abstract] OR "continuous coverage"[Title/Abstract] OR churn[Title/Abstract] OR redetermination[Title/Abstract])`
 
 Policy scan terms:
 
@@ -41,7 +39,7 @@ Policy scan terms:
 
 ## Selection Process
 
-All candidate records remain available in the dataset. Automated relevance scoring assigns concept flags and conservative screening tiers. Records that clearly lack required core concepts may be marked `automation_exclude`, counted separately as records marked ineligible by automation, and sampled for human validation. Tier 1 and tier 2 records should be manually screened first; tier 3 records should receive a quick human check if time allows. A human reviewer completes final title/abstract rescue decisions, full-text eligibility review, and final inclusion decisions using the manual CSV files.
+All candidate records remain available for human screening. Automated relevance scoring may suggest `likely_include`, `maybe`, or `likely_exclude`, but these suggestions are not formal exclusion decisions. A human reviewer completes title/abstract screening and full-text eligibility review using the manual CSV files.
 
 ## Record Volume Quality Checks
 
@@ -67,4 +65,4 @@ The synthesis will summarize evidence by policy feature, outcome domain, populat
 
 ## Automation Statement
 
-Automation is used for reproducible searching, metadata cleaning, deduplication, transparent relevance scoring, screening workbook setup, policy-source logging, evidence-table templating, validation sampling, and PRISMA-style count tracking. Automation-excluded title/abstract records are counted separately from human exclusions and require validation sampling. Final full-text inclusion decisions are made by human review.
+Automation is used for reproducible searching, metadata cleaning, deduplication, transparent relevance scoring, screening workbook setup, policy-source logging, evidence-table templating, and PRISMA-style count tracking. Automation does not make final include/exclude decisions. `records_marked_ineligible_by_automation` is set to `0` unless the reviewer later approves a specific automated exclusion rule.

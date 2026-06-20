@@ -6,13 +6,11 @@
 - Crossref through the Crossref Works API for metadata enrichment.
 - Manually curated policy and gray-literature sources tracked in `data/manual/policy_sources_manual.csv`.
 
-PubMed was used as the automated bibliographic database search for the main PRISMA workflow. This was supplemented by targeted policy and gray-literature searches from CMS/Medicaid.gov, KFF, MACPAC, NASHP, ACOG, Commonwealth Fund, and state Medicaid documents.
-
-OpenAlex was tested during development but was not retained in the final main search workflow because the query returned an overly broad result set. OpenAlex is not treated as part of the final PRISMA search unless explicitly approved later.
+OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
 ## Exact Academic Search String
 
-`(Medicaid OR CHIP) AND (postpartum OR "post-partum" OR pregnancy) AND (coverage OR eligibility OR extension OR "continuous coverage" OR churn OR redetermination) AND ("access to care" OR "continuity of care" OR morbidity OR mortality OR "behavioral health" OR equity OR disparities)`
+`(Medicaid[Title/Abstract] OR CHIP[Title/Abstract]) AND (postpartum[Title/Abstract] OR post-partum[Title/Abstract] OR postnatal[Title/Abstract]) AND (coverage[Title/Abstract] OR eligibility[Title/Abstract] OR extension[Title/Abstract] OR "continuous coverage"[Title/Abstract] OR churn[Title/Abstract] OR redetermination[Title/Abstract])`
 
 ## Limits
 
@@ -22,11 +20,11 @@ OpenAlex was tested during development but was not retained in the final main se
 
 ## Search Logging
 
-The PubMed search script appends source, interface/API, search date, exact search string, result count, downloaded count, and notes to `data/outputs/search_log.csv`. Exploratory OpenAlex testing is not included in the main search log.
+The PubMed search script writes source, interface/API, search date, exact search string, result count, downloaded count, and notes to `data/outputs/search_log.csv`.
 
 ## Deduplication Logic
 
-PubMed records are deduplicated in this order:
+PubMed records are deduplicated before screening in this order:
 
 1. DOI when available.
 2. PMID when available.
@@ -36,9 +34,7 @@ The combined file, deduplicated file, and duplicate-record file are saved separa
 
 ## Automation Role
 
-Automation retrieves records, cleans metadata, deduplicates records, scores relevance, prepares screening files, and builds PRISMA-style count outputs.
-
-Title and abstract records were prioritized using a rule-based automation-assisted screening script that identified whether each record contained core concepts related to Medicaid/CHIP, postpartum or pregnancy-to-postpartum care, coverage or eligibility policy, access/outcome/equity relevance, and U.S. context. Records that clearly lacked required core concepts were marked as automation exclusion candidates and counted separately in the PRISMA flow diagram. A random validation sample of automation-excluded records was created for human review to assess whether relevant records were incorrectly excluded. Final full-text inclusion decisions were made by human review.
+Automation retrieves records, cleans metadata, deduplicates records, scores relevance, prepares screening files, and builds PRISMA-style count outputs. No records are excluded by automation in the final Strategy E workflow. `records_marked_ineligible_by_automation` remains `0`.
 
 ## Screening Process
 
@@ -47,7 +43,6 @@ Human reviewers complete title/abstract screening in `data/manual/screening_deci
 - `include_for_full_text`
 - `maybe`
 - `exclude`
-- `automation_exclude`
 
 Allowed exclusion reasons are:
 
@@ -87,4 +82,4 @@ Practical record-volume targets are quality checks only:
 
 ## PRISMA Count Definitions
 
-`scripts/07_build_prisma_counts.py` reads the PubMed-only main search log, deduplicated records, duplicate records, screening decisions, full-text review decisions, and evidence table. It outputs `data/outputs/prisma_counts.csv` with database identification counts, duplicate removals, human screening exclusions, full-text retrieval and eligibility counts, included studies, reports of included studies, and a record-volume quality flag.
+`scripts/07_build_prisma_counts.py` reads the PubMed-only search log, deduplicated records, duplicate records, screening decisions, full-text review decisions, and evidence table. It outputs `data/outputs/prisma_counts.csv` with database identification counts, duplicate removals, human screening exclusions, full-text retrieval and eligibility counts, included studies, reports of included studies, and a record-volume quality flag.
