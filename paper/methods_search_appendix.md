@@ -115,6 +115,8 @@ Allowed narrowed screening reasons are:
 
 No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for records retained after narrowing.
 
+Timeline-based automation triage may be used before manual second-pass screening to prioritize the 166 records. The triage script (`scripts/12_timeline_scope_triage.py`) searches title and abstract text for post-2021/ARPA timing terms, 12-month or extended postpartum coverage terms, Medicaid/CHIP policy mechanism terms, and access/continuity/equity outcome terms. It writes a transparent score, tier, matched-term list, suggestion, and note to the screening file. These fields are used only to prioritize human review and do not populate `narrowed_screening_decision` or determine final inclusion/exclusion.
+
 ## Full-Text Review
 
 Human reviewers complete full-text review in `data/manual/full_text_review.csv`. Allowed full-text decisions are:

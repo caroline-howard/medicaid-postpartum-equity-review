@@ -48,6 +48,11 @@ Allowed exclusion reasons: `wrong_population`, `wrong_policy_or_intervention`, `
 
 Narrowed second-pass screening columns preserve the original title/abstract decisions while allowing the review scope to be narrowed before full-text review:
 
+- `timeline_scope_score`: Rule-based automation score used to prioritize second-pass screening; populated only for first-pass `include_for_full_text` and `maybe` records.
+- `timeline_scope_tier`: Rule-based triage tier: `tier_1_strong_match`, `tier_2_possible_match`, `tier_3_background_context`, or `tier_4_likely_out_of_scope`.
+- `timeline_scope_matched_terms`: Matched timeline/scope terms grouped by concept so the score can be audited.
+- `automation_narrowing_suggestion`: Automation suggestion for prioritization only: `prioritize_for_human_review`, `possible_retain`, `likely_background_only`, or `likely_exclude_after_narrowing`.
+- `automation_narrowing_note`: Short explanation of the automated triage tier.
 - `narrowed_screening_decision`: Allowed values are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`.
 - `narrowed_screening_reason`: Allowed values are `directly_about_12_month_postpartum_medicaid_extension`, `state_adoption_or_implementation`, `access_or_continuity_outcome`, `equity_or_disparity_relevance`, `broad_maternal_health_policy_only`, `not_12_month_extension`, `not_post_2021_relevant`, `not_medicaid_postpartum_policy`, `background_context_only`, and `other`.
 - `narrowed_notes`: Free-text notes for second-pass screening.

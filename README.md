@@ -41,6 +41,7 @@ python scripts/07_build_prisma_counts.py
 - `data/outputs/search_log.csv`: reproducible source-level search log.
 - `data/outputs/screening_validation_report.md`: validation report for completed title/abstract screening decisions.
 - `data/outputs/narrowed_screening_summary.md`: status summary for the narrowed second-pass screening workflow.
+- `data/outputs/timeline_scope_triage_report.md`: automation-prioritization report for narrowed second-pass screening.
 
 ## Human Review Required
 
@@ -108,13 +109,21 @@ python scripts/07_build_prisma_counts.py
 
 ## Narrowed Second-Pass Screening
 
+Before manual narrowed screening, run the timeline/scope triage script to rank the 166 second-pass records by how closely the title/abstract matches the post-2021 12-month postpartum Medicaid extension scope:
+
+```bash
+python scripts/12_timeline_scope_triage.py
+```
+
+The script writes `timeline_scope_score`, `timeline_scope_tier`, `timeline_scope_matched_terms`, `automation_narrowing_suggestion`, and `automation_narrowing_note` to `data/manual/screening_decisions.csv` for first-pass `include_for_full_text` and `maybe` records only. These fields are automation suggestions for prioritization only; they are not final narrowed screening decisions and are not copied into `narrowed_screening_decision`.
+
 Before full-text review, use the narrowed screening app to review only the 166 records marked `include_for_full_text` or `maybe` in the initial broad screen:
 
 ```bash
 streamlit run scripts/11_narrowed_screening_app.py
 ```
 
-The narrowed app reads from and saves directly back to `data/manual/screening_decisions.csv`. It fills only the second-pass columns: `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes`.
+The narrowed app reads from and saves directly back to `data/manual/screening_decisions.csv`. It displays the timeline/scope triage fields and fills only the human second-pass columns: `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes`.
 
 Allowed narrowed decisions are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`. Full-text review should not be narrowed to retained records until second-pass screening is complete.
 
