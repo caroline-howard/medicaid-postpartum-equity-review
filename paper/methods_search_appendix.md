@@ -4,11 +4,11 @@
 
 - PubMed through NCBI E-utilities.
 - Crossref through the Crossref Works API for metadata enrichment.
-- Manually curated policy and gray-literature sources tracked in `data/manual/policy_sources_manual.csv`.
+- Manually curated policy and gray-literature sources tracked in `data/manual/policy_sources_manual.csv` as development/context documentation only.
 
 OpenAlex was explored during development but was not retained in the final main workflow because it produced an overly broad result set.
 
-This repository supports an in-progress systematic review portfolio paper titled "State Adoption and Implementation of Twelve-Month Postpartum Medicaid Coverage Extensions After the American Rescue Plan Act: A Systematic Review." PubMed is the main automated academic database source, and the final PubMed search uses Strategy E. OpenAlex was exploratory only and is not part of the final PRISMA workflow.
+This repository supports an in-progress narrowed empirical scoping-review portfolio paper on Medicaid/CHIP postpartum coverage, continuity, implementation, access, and equity evidence. PubMed is the main automated academic database source, and the final PubMed search uses Strategy E. OpenAlex was exploratory only and is not part of the final PRISMA workflow.
 
 ## Exact Academic Search String
 
@@ -18,7 +18,7 @@ This repository supports an in-progress systematic review portfolio paper titled
 
 - Geography: United States.
 - Date range: 2014-2026.
-- Sources: PubMed, Crossref metadata enrichment, and manually curated policy/context sources.
+- Sources: PubMed records with optional Crossref metadata enrichment.
 
 ## Search Logging
 
@@ -72,7 +72,7 @@ Allowed exclusion reasons are:
 - `not_postpartum`
 - `not_us_based`
 - `no_relevant_outcome`
-- `background_only`
+- `background_only` (first-pass broad-screen reason only)
 - `opinion_without_data_or_policy_detail`
 - `duplicate`
 - `other`
@@ -95,32 +95,28 @@ Exclusion reasons for excluded records were:
 
 The 166 records marked `include_for_full_text` or `maybe` were then assessed in a narrowed empirical second-pass screen before full-text review. The project is now documented as a narrowed empirical scoping review. The narrowed evidence map retains only peer-reviewed empirical primary studies where Medicaid, CHIP, or public insurance is the postpartum coverage, eligibility, continuity, access, implementation, reimbursement, or policy mechanism.
 
-The narrowed empirical screen excluded policy opinion pieces, commentaries, issue briefs, professional statements, narrative policy reviews, systematic reviews, scoping reviews, meta-analyses, broad maternal health articles with only a minor Medicaid mention, records where Medicaid is only a payer/data source/covariate/subgroup, and studies with data or cohorts entirely before 2015.
+The narrowed empirical screen excluded policy opinion pieces, commentaries, issue briefs, general policy reports, professional statements, narrative policy reviews, systematic reviews, scoping reviews, meta-analyses, broad maternal health background articles with only a minor Medicaid mention, records where Medicaid is only a payer/data source/covariate/subgroup, and studies with data or cohorts entirely before 2015.
 
-Narrowed second-pass decisions are stored in `narrowed_screening_decision`, with allowed values:
+Narrowed second-pass decisions are stored in `narrowed_screening_decision`. The final retained evidence-map category is:
 
 - `retain_for_full_text`
-- `background_only`
+
+Exclusions are stored as:
+
 - `exclude_after_narrowing`
-- `unsure_second_pass`
 
-Allowed narrowed screening reasons are:
+Historical values such as `background_only` and `unsure_second_pass` may remain in scripts or older outputs for auditability, but they are not retained evidence-map source types.
 
-- `directly_about_12_month_postpartum_medicaid_extension`
-- `state_adoption_or_implementation`
-- `access_or_continuity_outcome`
-- `equity_or_disparity_relevance`
-- `broad_maternal_health_policy_only`
-- `not_12_month_extension`
-- `not_post_2021_relevant`
+Final narrowed exclusion reasons include:
+
 - `pre_2015_cohort`
 - `not_medicaid_postpartum_policy`
 - `outside_final_empirical_scope`
 - `not_empirical_study`
 - `policy_or_commentary_only`
 - `evidence_synthesis_not_primary_study`
-- `background_context_only`
-- `other`
+
+Historical or triage-oriented reason values may remain in the CSV for transparency, but they are not the final narrowed empirical inclusion logic.
 
 Narrowed empirical screening is complete. Thirty-two records were retained for full-text review:
 
@@ -130,27 +126,24 @@ Narrowed empirical screening is complete. Thirty-two records were retained for f
 
 No records were excluded by automation. Final inclusion decisions have not been made because full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is full-text retrieval and eligibility review for the 32 records retained after narrowing.
 
-Timeline-based automation triage may be used before manual second-pass screening to prioritize the 166 records. The triage script (`scripts/12_timeline_scope_triage.py`) searches title and abstract text for post-2021/ARPA timing terms, 12-month or extended postpartum coverage terms, Medicaid/CHIP policy mechanism terms, and access/continuity/equity outcome terms. It writes a transparent score, tier, matched-term list, suggestion, and note to the screening file. These fields are used only to prioritize human review and do not populate `narrowed_screening_decision` or determine final inclusion/exclusion.
+Timeline-based automation triage was used only to prioritize and audit review. The triage script (`scripts/12_timeline_scope_triage.py`) searches title and abstract text for timing terms, extended postpartum coverage terms, Medicaid/CHIP policy mechanism terms, and access/continuity/equity outcome terms. It writes a transparent score, tier, matched-term list, suggestion, and note to the screening file. These fields are used only to prioritize human review and do not populate `narrowed_screening_decision` or determine final inclusion/exclusion.
 
 ## Full-Text Review
 
-Human reviewers complete full-text review in `data/manual/full_text_review.csv`. Allowed full-text decisions are:
+Human reviewers complete full-text review in `data/manual/full_text_review.csv`. The final evidence synthesis should include only peer-reviewed empirical primary studies that pass full-text eligibility review. Template values may include historical categories, but policy/context or background records are not retained evidence-map source types.
 
 - `include_core_evidence`
-- `include_policy_context`
-- `background_only`
 - `exclude`
 
 ## Record Volume Guidance
 
-There is no required number of included studies for this systematic review. Final inclusion depends on eligibility criteria and human screening decisions.
+There is no required number of included studies for this narrowed empirical scoping review. Final inclusion depends on eligibility criteria and human screening decisions.
 
 Practical record-volume targets are quality checks only:
 
 - Target initial candidate records after database searching: approximately 100-400 records before deduplication.
 - If fewer than 50 PubMed records are retrieved, flag the search as potentially too narrow and suggest broader search terms.
 - If more than 750 records are retrieved, flag the search as potentially too broad and suggest narrower search terms or additional filters.
-- Target final included sources for a feasible portfolio systematic review: approximately 10-25 core evidence sources, plus separately labeled policy/context sources if relevant.
 - Do not exclude records simply to hit a target number.
 - Do not include weak or off-topic records just to reach a target number.
 - The final number of included studies should come from the documented screening and full-text eligibility process.
