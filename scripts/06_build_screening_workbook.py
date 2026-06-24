@@ -46,7 +46,9 @@ NARROWED_REASON_OPTIONS = [
     "broad_maternal_health_policy_only",
     "not_12_month_extension",
     "not_post_2021_relevant",
+    "pre_2015_cohort",
     "not_medicaid_postpartum_policy",
+    "outside_final_empirical_scope",
     "background_context_only",
     "other",
 ]

@@ -6,6 +6,8 @@ __pycache__/
 data/raw/*.csv
 data/processed/*.csv
 !data/manual/*.csv
+data/manual/backups/
+data/manual/*backup*.csv
 !data/outputs/.gitkeep
 !data/raw/.gitkeep
 !data/processed/.gitkeep

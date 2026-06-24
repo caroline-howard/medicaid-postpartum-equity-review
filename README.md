@@ -40,7 +40,9 @@ python scripts/07_build_prisma_counts.py
 - `data/outputs/prisma_counts.csv`: PRISMA-style count summary.
 - `data/outputs/search_log.csv`: reproducible source-level search log.
 - `data/outputs/screening_validation_report.md`: validation report for completed title/abstract screening decisions.
-- `data/outputs/narrowed_screening_summary.md`: status summary for the narrowed second-pass screening workflow.
+- `data/outputs/narrowed_empirical_screening_summary.md`: status summary for the frozen narrowed empirical screening workflow.
+- `data/outputs/narrowed_empirical_retained_records.csv`: the 32 records retained for full-text review after narrowed empirical screening.
+- `data/outputs/narrowed_screening_summary.md`: earlier status summary for the narrowed second-pass screening workflow.
 - `data/outputs/timeline_scope_triage_report.md`: automation-prioritization report for narrowed second-pass screening.
 
 ## Human Review Required
@@ -75,9 +77,15 @@ Exclusion reasons for the 45 excluded records were:
 - `duplicate`: 1
 - `not_us_based`: 1
 
-A total of 166 records were marked `include_for_full_text` or `maybe` in the initial broad screen. Before full-text review, the scope was narrowed to records that directly address post-2021 state adoption or implementation of 12-month postpartum Medicaid coverage extensions. These 166 records now require second-pass narrowed screening.
+A total of 166 records were marked `include_for_full_text` or `maybe` in the initial broad screen. Before full-text review, the project was narrowed to an empirical scoping-review evidence map. The narrowed workflow retains only peer-reviewed empirical primary studies where Medicaid, CHIP, or public insurance is the postpartum coverage, eligibility, continuity, access, implementation, reimbursement, or policy mechanism.
 
-No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for records retained after narrowing.
+Narrowed empirical screening is complete. Thirty-two records are retained for full-text review:
+
+- `post_2021_policy_implementation_evidence`: 16
+- `pre_2021_baseline_problem_evidence`: 14
+- `service_specific_medicaid_access_policy`: 2
+
+No records were excluded by automation. Final inclusion decisions have not been made because full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is full-text retrieval and eligibility review for the 32 records retained after narrowing.
 
 ## Title/Abstract Screening
 
@@ -107,25 +115,27 @@ After title/abstract decisions are complete and validated, rerun:
 python scripts/07_build_prisma_counts.py
 ```
 
-## Narrowed Second-Pass Screening
+## Narrowed Empirical Screening
 
-Before manual narrowed screening, run the timeline/scope triage script to rank the 166 second-pass records by how closely the title/abstract matches the post-2021 12-month postpartum Medicaid extension scope:
+The narrowed empirical screening rules are documented in `docs/narrowed_empirical_screening_rules.md`. The final retained full-text pool is frozen to 32 peer-reviewed empirical primary studies. Policy commentaries, issue briefs, professional statements, narrative reviews, evidence syntheses, Medicaid-only payer/data-source records, and entirely pre-2015 cohorts are excluded after narrowing.
+
+The timeline/scope triage script may be used to audit automation-assisted prioritization fields:
 
 ```bash
 python scripts/12_timeline_scope_triage.py
 ```
 
-The script writes `timeline_scope_score`, `timeline_scope_tier`, `timeline_scope_matched_terms`, `automation_narrowing_suggestion`, and `automation_narrowing_note` to `data/manual/screening_decisions.csv` for first-pass `include_for_full_text` and `maybe` records only. These fields are automation suggestions for prioritization only; they are not final narrowed screening decisions and are not copied into `narrowed_screening_decision`.
+The script writes `timeline_scope_score`, `timeline_scope_tier`, `timeline_scope_matched_terms`, `automation_narrowing_suggestion`, and `automation_narrowing_note` to `data/manual/screening_decisions.csv`. These fields are automation suggestions for prioritization only; they are not final narrowed screening decisions and are not copied into `narrowed_screening_decision`.
 
-Before full-text review, use the narrowed screening app to review only the 166 records marked `include_for_full_text` or `maybe` in the initial broad screen:
+Use the narrowed screening app to audit or adjust one record at a time:
 
 ```bash
 streamlit run scripts/11_narrowed_screening_app.py
 ```
 
-The narrowed app reads from and saves directly back to `data/manual/screening_decisions.csv`. It displays the timeline/scope triage fields and fills only the human second-pass columns: `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes`.
+The narrowed app reads from and saves directly back to `data/manual/screening_decisions.csv`. It displays automation suggestions as guidance and saves only the current record's manual narrowed fields: `narrowed_screening_decision`, `narrowed_screening_reason`, `narrowed_notes`, and `evidence_role`.
 
-Allowed narrowed decisions are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`. Full-text review should not be narrowed to retained records until second-pass screening is complete.
+Allowed narrowed decisions are `retain_for_full_text`, `background_only`, `exclude_after_narrowing`, and `unsure_second_pass`. Full-text retrieval should now proceed for the 32 records marked `retain_for_full_text`.
 
 ## PRISMA 2020 Support
 

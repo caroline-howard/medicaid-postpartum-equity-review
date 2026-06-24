@@ -69,6 +69,16 @@ def main() -> None:
     full_text_decisions = full_text.get("human_full_text_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
     exclusion_reasons = full_text.get("full_text_exclusion_reason", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
     flag, note = volume_flag(records_identified)
+    narrowed_decisions = screening.get("narrowed_screening_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
+    has_narrowed_empirical_screen = narrowed_decisions.eq("retain_for_full_text").any()
+    if has_narrowed_empirical_screen:
+        records_excluded_human = count_value(narrowed_decisions, "exclude_after_narrowing") + count_value(
+            narrowed_decisions, "background_only"
+        )
+        reports_sought_for_retrieval = count_value(narrowed_decisions, "retain_for_full_text")
+    else:
+        records_excluded_human = count_value(screening.get("human_title_abstract_decision", pd.Series(dtype=str)), "exclude")
+        reports_sought_for_retrieval = yes_count(screening.get("full_text_needed", pd.Series(dtype=str)))
 
     counts = {
         "records_identified_databases": records_identified,
@@ -77,8 +87,8 @@ def main() -> None:
         "records_marked_ineligible_by_automation": 0,
         "records_removed_other_reasons": 0,
         "records_screened": screened,
-        "records_excluded_human": count_value(screening.get("human_title_abstract_decision", pd.Series(dtype=str)), "exclude"),
-        "reports_sought_for_retrieval": yes_count(screening.get("full_text_needed", pd.Series(dtype=str))),
+        "records_excluded_human": records_excluded_human,
+        "reports_sought_for_retrieval": reports_sought_for_retrieval,
         "reports_not_retrieved": count_value(full_text.get("full_text_retrieved", pd.Series(dtype=str)), "no"),
         "reports_assessed_for_eligibility": int(full_text_decisions.ne("").sum()),
         "reports_excluded_wrong_population": count_value(exclusion_reasons, "wrong_population"),
