@@ -12,9 +12,9 @@ The retained study must directly address Medicaid, CHIP, or public insurance in 
 
 Use `exclude_after_narrowing` for records that do not meet the narrowed empirical evidence-map scope. Exclusion categories include:
 
-- Policy opinion pieces, commentaries, professional recommendations, position statements, issue briefs, and narrative policy reviews.
+- Policy opinion pieces, commentaries, professional recommendations, position statements, issue briefs, general policy reports, professional association statements, and narrative policy reviews.
 - Systematic reviews, scoping reviews, meta-analyses, and other evidence syntheses that do not present primary empirical findings.
-- Broad maternal health articles where Medicaid or postpartum coverage is only a minor contextual mention.
+- Broad maternal health background articles where Medicaid or postpartum coverage is only a minor contextual mention.
 - Records where Medicaid appears only as a payer, claims source, covariate, subgroup, socioeconomic proxy, or sample descriptor rather than the postpartum policy mechanism being studied.
 - Studies with data or cohorts entirely before 2015.
 - Remaining records outside the frozen final empirical scope.
@@ -35,7 +35,7 @@ Use the most specific reason available:
 
 Retained studies are assigned one manual `evidence_role`:
 
-- `post_2021_policy_implementation_evidence`: empirical evidence on ARPA 12-month postpartum Medicaid extension, FFCRA continuous coverage, unwinding, state adoption, or implementation.
+- `post_2021_policy_implementation_evidence`: empirical evidence on post-2021 Medicaid/CHIP postpartum coverage extension, FFCRA continuous coverage, unwinding, state adoption, or implementation.
 - `pre_2021_baseline_problem_evidence`: empirical pre-2021 evidence documenting the baseline problem, such as postpartum coverage loss, Medicaid churn, uninsurance, care access gaps, or related disparities.
 - `service_specific_medicaid_access_policy`: empirical evidence on Medicaid postpartum service coverage, reimbursement, access, or implementation for directly relevant services.
 
