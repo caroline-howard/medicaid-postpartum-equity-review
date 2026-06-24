@@ -93,7 +93,11 @@ Exclusion reasons for excluded records were:
 - `duplicate`: 1
 - `not_us_based`: 1
 
-The 166 records marked `include_for_full_text` or `maybe` are eligible for a second-pass narrowed screen before full-text review. This narrowed screen focuses on direct relevance to post-2021 state adoption and implementation of 12-month postpartum Medicaid coverage extensions after the American Rescue Plan Act. Narrowed second-pass decisions are stored in `narrowed_screening_decision`, with allowed values:
+The 166 records marked `include_for_full_text` or `maybe` were then assessed in a narrowed empirical second-pass screen before full-text review. The project is now documented as a narrowed empirical scoping review. The narrowed evidence map retains only peer-reviewed empirical primary studies where Medicaid, CHIP, or public insurance is the postpartum coverage, eligibility, continuity, access, implementation, reimbursement, or policy mechanism.
+
+The narrowed empirical screen excluded policy opinion pieces, commentaries, issue briefs, professional statements, narrative policy reviews, systematic reviews, scoping reviews, meta-analyses, broad maternal health articles with only a minor Medicaid mention, records where Medicaid is only a payer/data source/covariate/subgroup, and studies with data or cohorts entirely before 2015.
+
+Narrowed second-pass decisions are stored in `narrowed_screening_decision`, with allowed values:
 
 - `retain_for_full_text`
 - `background_only`
@@ -109,11 +113,22 @@ Allowed narrowed screening reasons are:
 - `broad_maternal_health_policy_only`
 - `not_12_month_extension`
 - `not_post_2021_relevant`
+- `pre_2015_cohort`
 - `not_medicaid_postpartum_policy`
+- `outside_final_empirical_scope`
+- `not_empirical_study`
+- `policy_or_commentary_only`
+- `evidence_synthesis_not_primary_study`
 - `background_context_only`
 - `other`
 
-No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is second-pass narrowed screening, followed by full-text retrieval and eligibility review for records retained after narrowing.
+Narrowed empirical screening is complete. Thirty-two records were retained for full-text review:
+
+- `post_2021_policy_implementation_evidence`: 16
+- `pre_2021_baseline_problem_evidence`: 14
+- `service_specific_medicaid_access_policy`: 2
+
+No records were excluded by automation. Final inclusion decisions have not been made because full-text retrieval, eligibility review, and evidence synthesis have not been completed. The next step is full-text retrieval and eligibility review for the 32 records retained after narrowing.
 
 Timeline-based automation triage may be used before manual second-pass screening to prioritize the 166 records. The triage script (`scripts/12_timeline_scope_triage.py`) searches title and abstract text for post-2021/ARPA timing terms, 12-month or extended postpartum coverage terms, Medicaid/CHIP policy mechanism terms, and access/continuity/equity outcome terms. It writes a transparent score, tier, matched-term list, suggestion, and note to the screening file. These fields are used only to prioritize human review and do not populate `narrowed_screening_decision` or determine final inclusion/exclusion.
 

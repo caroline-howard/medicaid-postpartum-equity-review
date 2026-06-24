@@ -4,44 +4,41 @@ The systematic review scope was narrowed before full-text review.
 
 Old broad topic: Medicaid postpartum coverage extensions, maternal health access, continuity of care, and health equity.
 
-New final scope: state adoption and implementation of 12-month postpartum Medicaid coverage extensions after the American Rescue Plan Act.
-
-New research question: How has state adoption of 12-month postpartum Medicaid coverage extensions after 2021 been studied in relation to postpartum access, coverage continuity, and equity?
+Final narrowed scope: a peer-reviewed empirical scoping-review evidence map of Medicaid, CHIP, or public insurance as the postpartum coverage, eligibility, continuity, access, implementation, reimbursement, or policy mechanism.
 
 ## Initial Broad Screening Status
 
-- Total records screened in first-pass title/abstract screening: 211
+- Total PubMed records screened in first-pass title/abstract screening: 211
 - `include_for_full_text`: 136
 - `maybe`: 30
 - `exclude`: 45
-- Records eligible for narrowed second-pass screening: 166
+- Records eligible for second-pass narrowing from the broad screen: 166
 
 The original first-pass screening decisions are preserved in `data/manual/screening_decisions.csv`.
 
-## Narrowed Second-Pass Screening Status
+## Narrowed Empirical Screening Status
 
-Narrowed second-pass screening has not been completed yet. The new columns `narrowed_screening_decision`, `narrowed_screening_reason`, and `narrowed_notes` have been added to `data/manual/screening_decisions.csv`.
+Narrowed empirical screening is complete. The final full-text review pool is frozen at 32 peer-reviewed empirical primary studies.
 
-Current narrowed decision counts:
+- `retain_for_full_text`: 32
+- `exclude_after_narrowing`: 179
+- blank/not yet screened: 0
 
-- `retain_for_full_text`: 0
-- `background_only`: 0
-- `exclude_after_narrowing`: 0
-- `unsure_second_pass`: 0
-- blank/not yet screened: 166
+Retained evidence roles:
 
-Reasons by category will be summarized after narrowed screening is completed.
-
-Number moving to full-text review after narrowing: not yet determined.
+- `post_2021_policy_implementation_evidence`: 16
+- `pre_2021_baseline_problem_evidence`: 14
+- `service_specific_medicaid_access_policy`: 2
 
 No records were excluded by automation.
 
+## Outputs
+
+- Final rules: `docs/narrowed_empirical_screening_rules.md`
+- Retained-record export: `data/outputs/narrowed_empirical_retained_records.csv`
+- Concise summary: `data/outputs/narrowed_empirical_screening_summary.md`
+- Validation report: `data/outputs/screening_validation_report.md`
+
 ## Next Step
 
-Run the narrowed second-pass screening app and review the 166 first-pass `include_for_full_text` or `maybe` records:
-
-```bash
-streamlit run scripts/11_narrowed_screening_app.py
-```
-
-After narrowed screening is complete, `data/manual/full_text_review.csv` should be filtered to records marked `retain_for_full_text`.
+Retrieve full texts and complete full-text eligibility review for the 32 records marked `retain_for_full_text`.

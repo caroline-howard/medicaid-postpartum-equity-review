@@ -9,6 +9,12 @@ SCREENING_CSV = DATA / "manual" / "screening_decisions.csv"
 BASELINE_CSV = DATA / "processed" / "deduplicated_records.csv"
 REPORT_PATH = DATA / "outputs" / "screening_validation_report.md"
 EXPECTED_RECORD_COUNT = 211
+EXPECTED_NARROWED_RETAINED_COUNT = 32
+EXPECTED_RETAINED_ROLE_COUNTS = {
+    "post_2021_policy_implementation_evidence": 16,
+    "pre_2021_baseline_problem_evidence": 14,
+    "service_specific_medicaid_access_policy": 2,
+}
 
 VALID_DECISIONS = {"", "include_for_full_text", "maybe", "exclude"}
 VALID_EXCLUSION_REASONS = {
@@ -24,6 +30,25 @@ VALID_EXCLUSION_REASONS = {
     "duplicate",
     "other",
 }
+VALID_NARROWED_DECISIONS = {"", "retain_for_full_text", "background_only", "exclude_after_narrowing", "unsure_second_pass"}
+VALID_NARROWED_REASONS = {
+    "",
+    "directly_about_12_month_postpartum_medicaid_extension",
+    "state_adoption_or_implementation",
+    "access_or_continuity_outcome",
+    "equity_or_disparity_relevance",
+    "not_empirical_study",
+    "policy_or_commentary_only",
+    "evidence_synthesis_not_primary_study",
+    "broad_maternal_health_policy_only",
+    "not_12_month_extension",
+    "not_post_2021_relevant",
+    "pre_2015_cohort",
+    "not_medicaid_postpartum_policy",
+    "outside_final_empirical_scope",
+    "background_context_only",
+    "other",
+}
 
 
 def clean(value: object) -> str:
@@ -36,7 +61,14 @@ def main() -> None:
     baseline = read_csv_if_exists(BASELINE_CSV)
     require_columns(
         screening,
-        ["record_id", "human_title_abstract_decision", "human_title_abstract_exclusion_reason"],
+        [
+            "record_id",
+            "human_title_abstract_decision",
+            "human_title_abstract_exclusion_reason",
+            "narrowed_screening_decision",
+            "narrowed_screening_reason",
+            "evidence_role",
+        ],
         str(SCREENING_CSV),
     )
     require_columns(baseline, ["record_id"], str(BASELINE_CSV))
@@ -66,6 +98,9 @@ def main() -> None:
     invalid_reasons = []
     excludes_without_reason = []
     non_excludes_with_reason = []
+    invalid_narrowed_decisions = []
+    invalid_narrowed_reasons = []
+    narrowed_excludes_without_reason = []
 
     for index, row in screening.iterrows():
         row_number = index + 2
@@ -83,6 +118,15 @@ def main() -> None:
         if decision in {"include_for_full_text", "maybe"} and reason:
             non_excludes_with_reason.append(label)
 
+        narrowed_decision = clean(row["narrowed_screening_decision"])
+        narrowed_reason = clean(row["narrowed_screening_reason"])
+        if narrowed_decision not in VALID_NARROWED_DECISIONS:
+            invalid_narrowed_decisions.append(f"{label}: {narrowed_decision}")
+        if narrowed_reason not in VALID_NARROWED_REASONS:
+            invalid_narrowed_reasons.append(f"{label}: {narrowed_reason}")
+        if narrowed_decision == "exclude_after_narrowing" and not narrowed_reason:
+            narrowed_excludes_without_reason.append(label)
+
     if invalid_decisions:
         failures.append(f"{len(invalid_decisions)} invalid title/abstract decisions found.")
     if invalid_reasons:
@@ -91,10 +135,30 @@ def main() -> None:
         failures.append(f"{len(excludes_without_reason)} excluded records are missing exclusion reasons.")
     if non_excludes_with_reason:
         failures.append(f"{len(non_excludes_with_reason)} include/maybe records have exclusion reasons filled in.")
+    if invalid_narrowed_decisions:
+        failures.append(f"{len(invalid_narrowed_decisions)} invalid narrowed screening decisions found.")
+    if invalid_narrowed_reasons:
+        failures.append(f"{len(invalid_narrowed_reasons)} invalid narrowed screening reasons found.")
+    if narrowed_excludes_without_reason:
+        warnings.append(f"{len(narrowed_excludes_without_reason)} narrowed exclusions are missing narrowed reasons.")
 
     blank_decisions = int((screening["human_title_abstract_decision"].map(clean) == "").sum())
     decision_counts = screening["human_title_abstract_decision"].map(clean).value_counts().to_dict()
     reason_counts = screening["human_title_abstract_exclusion_reason"].map(clean).value_counts().to_dict()
+    narrowed_decision_counts = screening["narrowed_screening_decision"].map(clean).value_counts().to_dict()
+    narrowed_reason_counts = screening["narrowed_screening_reason"].map(clean).value_counts().to_dict()
+    retained = screening[screening["narrowed_screening_decision"].map(clean).eq("retain_for_full_text")]
+    retained_role_counts = retained["evidence_role"].map(clean).value_counts().to_dict()
+    blank_narrowed = int((screening["narrowed_screening_decision"].map(clean) == "").sum())
+
+    if len(retained) != EXPECTED_NARROWED_RETAINED_COUNT:
+        failures.append(f"Expected {EXPECTED_NARROWED_RETAINED_COUNT} narrowed empirical retained records, found {len(retained)}.")
+    for role, expected_count in EXPECTED_RETAINED_ROLE_COUNTS.items():
+        actual_count = retained_role_counts.get(role, 0)
+        if actual_count != expected_count:
+            failures.append(f"Expected {expected_count} retained `{role}` records, found {actual_count}.")
+    if blank_narrowed:
+        failures.append(f"{blank_narrowed} records still have blank narrowed screening decisions after empirical freeze.")
 
     if blank_decisions:
         warnings.append(f"{blank_decisions} records do not yet have a human title/abstract decision.")
@@ -125,6 +189,28 @@ def main() -> None:
         label = "(blank)" if key == "" else key
         lines.append(f"- {label}: {reason_counts.get(key, 0)}")
 
+    lines.extend(["", "## Narrowed Empirical Screening Counts", ""])
+    for key in ["", "retain_for_full_text", "background_only", "exclude_after_narrowing", "unsure_second_pass"]:
+        label = "(blank)" if key == "" else key
+        lines.append(f"- {label}: {narrowed_decision_counts.get(key, 0)}")
+
+    lines.extend(["", "## Narrowed Exclusion Reason Counts", ""])
+    for key in [""] + sorted(VALID_NARROWED_REASONS - {""}):
+        label = "(blank)" if key == "" else key
+        lines.append(f"- {label}: {narrowed_reason_counts.get(key, 0)}")
+
+    lines.extend(["", "## Retained Evidence Role Counts", ""])
+    for role in [
+        "post_2021_policy_implementation_evidence",
+        "pre_2021_baseline_problem_evidence",
+        "service_specific_medicaid_access_policy",
+        "broad_maternal_health_background_only",
+        "medicaid_only_payer_or_data_source_exclude",
+        "",
+    ]:
+        label = "(blank)" if role == "" else role
+        lines.append(f"- {label}: {retained_role_counts.get(role, 0)}")
+
     lines.extend(["", "## Checks", ""])
     if failures:
         for failure in failures:
@@ -135,6 +221,9 @@ def main() -> None:
         lines.append("- PASS: All completed decisions are valid.")
         lines.append("- PASS: Every excluded record has an exclusion reason.")
         lines.append("- PASS: Include/maybe records do not have exclusion reasons filled in.")
+        lines.append("- PASS: Narrowed empirical screening decisions are complete.")
+        lines.append("- PASS: Narrowed empirical retained count is 32.")
+        lines.append("- PASS: Retained evidence role counts match the frozen empirical evidence map.")
 
     if warnings:
         lines.extend(["", "## Warnings", ""])
