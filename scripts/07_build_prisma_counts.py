@@ -24,6 +24,8 @@ COUNT_COLUMNS = [
     "reports_excluded_no_relevant_outcome",
     "reports_excluded_background_only",
     "reports_excluded_opinion_without_data_or_policy_detail",
+    "reports_excluded_unable_to_access_full_text",
+    "reports_excluded_medicaid_only_payer_or_data_source",
     "reports_excluded_other",
     "studies_included",
     "reports_of_included_studies",
@@ -38,6 +40,13 @@ def count_value(series: pd.Series, value: str) -> int:
 
 def yes_count(series: pd.Series) -> int:
     return int(series.fillna("").astype(str).str.lower().isin(["yes", "true", "1"]).sum())
+
+
+def get_column(df: pd.DataFrame, names: list[str]) -> pd.Series:
+    for name in names:
+        if name in df.columns:
+            return df[name]
+    return pd.Series(dtype=str)
 
 
 def volume_flag(records_identified: int) -> tuple[str, str]:
@@ -58,7 +67,9 @@ def main() -> None:
     duplicates = read_csv_if_exists(DATA / "processed" / "duplicates_removed.csv")
     screening = read_csv_if_exists(DATA / "manual" / "screening_decisions.csv")
     full_text = read_csv_if_exists(DATA / "manual" / "full_text_review.csv")
-    evidence = read_csv_if_exists(DATA / "outputs" / "evidence_table.csv")
+    evidence = read_csv_if_exists(DATA / "outputs" / "final_evidence_table.csv")
+    if evidence.empty:
+        evidence = read_csv_if_exists(DATA / "outputs" / "evidence_table.csv")
 
     if "source" in search_log.columns:
         main_search_log = search_log[search_log["source"].fillna("").astype(str).str.lower().eq("pubmed")]
@@ -66,19 +77,24 @@ def main() -> None:
         main_search_log = search_log
     records_identified = int(pd.to_numeric(main_search_log.get("downloaded_count", pd.Series(dtype=int)), errors="coerce").fillna(0).sum())
     screened = len(screening) if not screening.empty else len(deduped)
-    full_text_decisions = full_text.get("human_full_text_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
-    exclusion_reasons = full_text.get("full_text_exclusion_reason", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
+    full_text_decisions = get_column(full_text, ["full_text_decision", "human_full_text_decision"]).fillna("").astype(str).str.strip().str.lower()
+    exclusion_reasons = get_column(full_text, ["full_text_exclusion_reason", "exclusion_reason"]).fillna("").astype(str).str.strip().str.lower()
+    full_text_found = get_column(full_text, ["full_text_found", "full_text_retrieved"]).fillna("").astype(str).str.strip().str.lower()
+    narrowed_decisions = screening.get("narrowed_screening_decision", pd.Series(dtype=str)).fillna("").astype(str).str.strip().str.lower()
     flag, note = volume_flag(records_identified)
-    narrowed_decisions = screening.get("narrowed_screening_decision", pd.Series(dtype=str)).fillna("").astype(str).str.lower()
-    has_narrowed_empirical_screen = narrowed_decisions.eq("retain_for_full_text").any()
-    if has_narrowed_empirical_screen:
-        records_excluded_human = count_value(narrowed_decisions, "exclude_after_narrowing") + count_value(
-            narrowed_decisions, "background_only"
-        )
-        reports_sought_for_retrieval = count_value(narrowed_decisions, "retain_for_full_text")
-    else:
-        records_excluded_human = count_value(screening.get("human_title_abstract_decision", pd.Series(dtype=str)), "exclude")
-        reports_sought_for_retrieval = yes_count(screening.get("full_text_needed", pd.Series(dtype=str)))
+    retained_for_full_text = int(narrowed_decisions.eq("retain_for_full_text").sum())
+    if retained_for_full_text == 0 and not full_text.empty:
+        retained_for_full_text = len(full_text)
+    records_excluded_human = max(screened - retained_for_full_text, 0)
+    reports_assessed = int(full_text_decisions.ne("").sum())
+    reports_not_retrieved = int(
+        full_text_found.isin(["no", "false", "0"]).sum()
+        + exclusion_reasons.eq("unable_to_access_full_text").sum()
+        - (
+            full_text_found.isin(["no", "false", "0"])
+            & exclusion_reasons.eq("unable_to_access_full_text")
+        ).sum()
+    )
 
     counts = {
         "records_identified_databases": records_identified,
@@ -88,9 +104,9 @@ def main() -> None:
         "records_removed_other_reasons": 0,
         "records_screened": screened,
         "records_excluded_human": records_excluded_human,
-        "reports_sought_for_retrieval": reports_sought_for_retrieval,
-        "reports_not_retrieved": count_value(full_text.get("full_text_retrieved", pd.Series(dtype=str)), "no"),
-        "reports_assessed_for_eligibility": int(full_text_decisions.ne("").sum()),
+        "reports_sought_for_retrieval": retained_for_full_text,
+        "reports_not_retrieved": reports_not_retrieved,
+        "reports_assessed_for_eligibility": reports_assessed,
         "reports_excluded_wrong_population": count_value(exclusion_reasons, "wrong_population"),
         "reports_excluded_wrong_policy_or_intervention": count_value(exclusion_reasons, "wrong_policy_or_intervention"),
         "reports_excluded_not_medicaid_or_chip": count_value(exclusion_reasons, "not_medicaid_or_chip"),
@@ -99,6 +115,8 @@ def main() -> None:
         "reports_excluded_no_relevant_outcome": count_value(exclusion_reasons, "no_relevant_outcome"),
         "reports_excluded_background_only": count_value(exclusion_reasons, "background_only"),
         "reports_excluded_opinion_without_data_or_policy_detail": count_value(exclusion_reasons, "opinion_without_data_or_policy_detail"),
+        "reports_excluded_unable_to_access_full_text": count_value(exclusion_reasons, "unable_to_access_full_text"),
+        "reports_excluded_medicaid_only_payer_or_data_source": count_value(exclusion_reasons, "medicaid_only_payer_or_data_source"),
         "reports_excluded_other": count_value(exclusion_reasons, "other"),
         "studies_included": int(full_text_decisions.isin(["include_core_evidence"]).sum()),
         "reports_of_included_studies": len(evidence),
