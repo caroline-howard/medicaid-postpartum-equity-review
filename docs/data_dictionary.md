@@ -79,13 +79,41 @@ These fields document the final empirical scoping-review evidence map.
 
 Human full-text review file. The current full-text pool should be limited to the 32 records marked `retain_for_full_text` after narrowed empirical screening. Historical full-text decision categories may exist in the template, but the final empirical evidence synthesis should include only peer-reviewed empirical primary studies that pass full-text eligibility review.
 
+## `data/manual/synthesis_manual_classification.csv`
+
+Manual synthesis-planning classification file for the 28 studies included after full-text review. This file is the source of truth for synthesis planning classifications, but it is not a screening decision file, evidence extraction output, or PRISMA count input.
+
+- `record_id`: Stable local record identifier.
+- `manual_policy_period_group`: Manual policy-period classification. Allowed values are `pre_policy_baseline_before_ffcra_or_extension`, `post_ffcra_continuous_eligibility_period`, `post_12_month_postpartum_extension_period`, `multiple_policy_eras`, and `unsure_manual_review`.
+- `manual_policy_eras_included`: Free-text note describing which policy eras are included, especially for `multiple_policy_eras`.
+- `manual_scope_type`: Manual scope classification. Allowed values are `national`, `multi_state`, `single_state`, and `not_clearly_specified`.
+- `manual_synthesis_notes`: Free-text reviewer notes explaining classification decisions.
+
+If `multiple_policy_era_type` appears in generated output files, it is a derived planning field based on `manual_policy_eras_included`. It is not a manual screening decision.
+
 ## `data/outputs/narrowed_empirical_retained_records.csv`
 
 Export of the 32 records retained for full-text review after narrowed empirical screening. Key fields include `record_id`, bibliographic identifiers, first-pass decision, narrowed decision, narrowed reason, narrowed notes, manual `evidence_role`, suggested role fields, triage tier, and relevance score.
 
 ## `data/outputs/evidence_table.csv`
 
-Evidence extraction template for empirical studies that pass full-text eligibility review. Historical source-type fields may exist in the template, but the final evidence map should use peer-reviewed empirical primary studies only.
+Evidence extraction template for empirical studies that pass full-text eligibility review. Historical source-type fields may exist in the template, but the final evidence map should use peer-reviewed empirical primary studies only. Evidence extraction has not yet been completed.
+
+## Manual Synthesis-Planning Export Files
+
+These files are generated from `data/manual/synthesis_manual_classification.csv` only. They are not evidence extraction outputs and are not PRISMA screening outputs.
+
+- `data/outputs/manual_pre_policy_baseline_before_ffcra_or_extension_studies.csv`: manually classified pre-policy baseline studies.
+- `data/outputs/manual_post_ffcra_continuous_eligibility_period_studies.csv`: manually classified FFCRA/COVID public health emergency continuous eligibility period studies.
+- `data/outputs/manual_post_12_month_postpartum_extension_period_studies.csv`: manually classified formal 12-month postpartum extension period studies.
+- `data/outputs/manual_multiple_policy_eras_studies.csv`: manually classified studies spanning multiple relevant policy eras.
+- `data/outputs/manual_unsure_review_studies.csv`: manually classified studies needing policy-period review.
+- `data/outputs/manual_national_studies.csv`: manually classified national-scope studies.
+- `data/outputs/manual_multi_state_studies.csv`: manually classified multi-state studies.
+- `data/outputs/manual_single_state_studies.csv`: manually classified single-state studies.
+- `data/outputs/manual_not_clearly_specified_scope_studies.csv`: manually classified studies with unclear scope.
+- `data/outputs/manual_synthesis_classification_summary.csv`: cross-tabulated manual classification summary by policy period and scope, plus derived multiple-policy-era planning counts where present.
+- `docs/manual_synthesis_classification_summary.md`: human-readable manual classification summary. This documentation is a synthesis-planning aid only; evidence extraction has not yet been completed.
 
 ## `data/outputs/prisma_counts.csv`
 

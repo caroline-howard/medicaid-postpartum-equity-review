@@ -56,7 +56,7 @@ Full-text exclusion reasons:
 - `unable_to_access_full_text`: 3
 - `medicaid_only_payer_or_data_source`: 1
 
-The final included empirical evidence table has been generated at `data/outputs/final_evidence_table.csv`.
+The final included-study table has been generated at `data/outputs/final_evidence_table.csv`. This table documents included studies after full-text eligibility review; it is not a completed evidence extraction or synthesis product.
 
 ## Record Volume Quality Checks
 
@@ -69,7 +69,7 @@ There is no required number of included studies. Final inclusion depends on elig
 
 ## Data Extraction
 
-Data extraction is stored in `data/manual/full_text_review.csv` and the final included evidence table is stored in `data/outputs/final_evidence_table.csv`. Extracted fields include study design, data years, data source, state or scope, population, Medicaid policy mechanism, outcomes, equity focus, main findings, limitations, and notes.
+Evidence extraction has not yet been completed. The next step is to extract structured study details from the 28 included full-text studies, including study design, data years, data source, state or scope, population, Medicaid policy mechanism, outcomes, equity focus, main findings, limitations, and notes.
 
 ## Risk Of Bias And Quality Appraisal Placeholder
 
@@ -77,7 +77,13 @@ A formal risk-of-bias or quality-appraisal approach should be selected before dr
 
 ## Synthesis Plan
 
-Evidence synthesis has not yet been drafted. The synthesis should summarize included empirical studies by evidence role, policy mechanism, data period, study design, outcome domain, population, state or national scope, and equity relevance.
+Evidence synthesis has not yet been drafted. Before evidence extraction, included studies were manually classified for synthesis planning by policy period and scope. This classification helps determine how the evidence should be organized later, but it is not an evidence synthesis and does not change inclusion decisions.
+
+### Manual Synthesis-Planning Classification
+
+Manual synthesis-planning classification occurs after full-text review and before evidence extraction. This step has been completed for all 28 included studies. It distinguishes pre-FFCRA/pre-extension baseline evidence, FFCRA/COVID continuous eligibility evidence, formal 12-month postpartum extension evidence, and multiple-era studies. It also distinguishes national, multi-state, single-state, and unclear scope.
+
+This step prevents imprecise writing where all "postpolicy" evidence is treated as the same. It will guide extraction by policy period and scope, but it does not alter PRISMA counts, included-study totals, narrowed screening decisions, or full-text decisions.
 
 ## Automation Statement
 

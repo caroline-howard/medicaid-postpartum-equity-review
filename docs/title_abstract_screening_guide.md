@@ -61,3 +61,7 @@ Final narrowed exclusion reasons include:
 - `evidence_synthesis_not_primary_study`
 
 Historical or triage-oriented reason values may remain in the CSV for transparency, but they are not the final narrowed empirical inclusion logic.
+
+## Downstream Manual Synthesis-Planning Classification
+
+After screening and full-text review, the included studies are manually classified by policy period and scope to support later extraction and writing. This is not part of title/abstract screening and does not affect inclusion/exclusion decisions.
