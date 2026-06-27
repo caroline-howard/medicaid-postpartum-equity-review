@@ -45,4 +45,8 @@ The frozen retained evidence map has 32 records:
 - `pre_2021_baseline_problem_evidence`: 14
 - `service_specific_medicaid_access_policy`: 2
 
-The next step is full-text retrieval and eligibility review for these 32 retained empirical records.
+Full-text retrieval and eligibility review have been completed for these 32 retained empirical records.
+
+## Downstream Classification Note
+
+The manual synthesis-planning classification occurs after narrowed empirical screening and full-text review. It organizes the 28 included studies for extraction and synthesis planning only. It does not alter the narrowed screening decisions or evidence-map inclusion.

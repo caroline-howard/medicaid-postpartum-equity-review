@@ -1,8 +1,8 @@
 # Title/Abstract Screening Summary
 
-This summary documents the initial title/abstract screening status for a systematic review portfolio paper now titled "State Adoption and Implementation of Twelve-Month Postpartum Medicaid Coverage Extensions After the American Rescue Plan Act: A Systematic Review."
+This summary documents the initial title/abstract screening status for the Medicaid postpartum coverage, continuity, implementation, access, and equity systematic review portfolio project.
 
-The original broad topic was Medicaid postpartum coverage extensions, maternal health access, continuity of care, and health equity. Before full-text review, the scope was narrowed to post-2021 state adoption and implementation of 12-month postpartum Medicaid coverage extensions.
+The original broad topic was Medicaid postpartum coverage extensions, maternal health access, continuity of care, and health equity. After first-pass title/abstract screening, the scope was narrowed to peer-reviewed empirical primary studies where Medicaid, CHIP, or public insurance is the postpartum coverage, eligibility, continuity, access, implementation, reimbursement, or policy mechanism.
 
 The final academic database search uses PubMed Strategy E. PubMed is the main automated academic database source. OpenAlex was explored during development but is not part of the final PRISMA workflow.
 
@@ -26,10 +26,10 @@ Exclusion reasons:
 - `duplicate`: 1
 - `not_us_based`: 1
 
-The 136 `include_for_full_text` records and 30 `maybe` records create a 166-record pool for narrowed second-pass screening. These records should not be treated as the final full-text review set until narrowed screening is complete.
+The 136 `include_for_full_text` records and 30 `maybe` records created a 166-record pool for narrowed second-pass screening. These first-pass decisions are historical screening documentation, not final included-study decisions.
 
-No records were excluded by automation. Final inclusion decisions have not been made because narrowed screening, full-text retrieval, eligibility review, and evidence synthesis have not been completed.
+No records were excluded by automation. Narrowed empirical screening and full-text review have since been completed. Final included empirical studies after full-text review: 28.
 
 ## Next Step
 
-The next step is narrowed second-pass screening using `scripts/11_narrowed_screening_app.py`.
+The current step is manual synthesis-planning classification of the 28 included studies. Evidence extraction has not yet been completed, and evidence synthesis/write-up has not started.
