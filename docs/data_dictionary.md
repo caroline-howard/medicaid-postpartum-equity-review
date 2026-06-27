@@ -112,6 +112,8 @@ These files are generated from `data/manual/synthesis_manual_classification.csv`
 - `data/outputs/manual_multi_state_studies.csv`: manually classified multi-state studies.
 - `data/outputs/manual_single_state_studies.csv`: manually classified single-state studies.
 - `data/outputs/manual_not_clearly_specified_scope_studies.csv`: manually classified studies with unclear scope.
+- `data/outputs/manual_synthesis_classification_summary.csv`: cross-tabulated manual classification summary by policy period and scope, plus derived multiple-policy-era planning counts where present.
+- `docs/manual_synthesis_classification_summary.md`: human-readable manual classification summary. This documentation is a synthesis-planning aid only; evidence extraction has not yet been completed.
 
 ## `data/outputs/prisma_counts.csv`
 

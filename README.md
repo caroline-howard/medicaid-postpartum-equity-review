@@ -11,7 +11,7 @@ Automation supports searching, deduplication, scoring, triage, formatting, and v
 - Final included empirical studies after full-text review: 28.
 - Excluded after full text: 4.
 - Blank full-text decisions remaining: 0.
-- Manual synthesis-planning classification: in progress.
+- Manual synthesis-planning classification: complete for 28 included studies.
 - Evidence extraction: not yet completed.
 - Evidence synthesis/write-up: not yet started.
 
@@ -162,6 +162,41 @@ Allowed values:
 Manual notes field: `manual_synthesis_notes`
 
 Manual synthesis-planning classification is used to plan evidence extraction and later synthesis. It is not a substitute for evidence extraction.
+
+## Manual Synthesis-Planning Classification Results
+
+These are manual synthesis-planning classification results, not evidence synthesis findings, PRISMA counts, or inclusion/exclusion decisions.
+
+Policy-period classification:
+
+| Manual policy period | Count |
+| --- | ---: |
+| `pre_policy_baseline_before_ffcra_or_extension` | 12 |
+| `post_ffcra_continuous_eligibility_period` | 2 |
+| `post_12_month_postpartum_extension_period` | 0 |
+| `multiple_policy_eras` | 14 |
+| `unsure_manual_review` | 0 |
+
+Scope classification:
+
+| Manual scope type | Count |
+| --- | ---: |
+| `national` | 7 |
+| `multi_state` | 15 |
+| `single_state` | 6 |
+| `not_clearly_specified` | 0 |
+
+Multiple-policy-era breakdown:
+
+| Multiple policy era type | Count |
+| --- | ---: |
+| `pre_plus_ffcra` | 11 |
+| `pre_plus_ffcra_plus_12_month_extension` | 2 |
+| `pre_plus_12_month_extension` | 1 |
+| `ffcra_plus_12_month_extension` | 0 |
+| `multiple_eras_unclear` | 0 |
+
+Evidence-structure interpretation: the manual classification shows that the included evidence is concentrated in pre-policy baseline and multiple-era studies, especially pre-FFCRA plus FFCRA continuous eligibility studies. No studies were classified as exclusively post-12-month postpartum extension period. This means later extraction and synthesis should distinguish FFCRA/COVID continuous eligibility evidence from formal 12-month postpartum extension evidence and should avoid treating all postpolicy evidence as the same.
 
 ## Extract Evidence
 

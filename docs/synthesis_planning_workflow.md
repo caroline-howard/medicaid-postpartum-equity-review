@@ -2,22 +2,54 @@
 
 ## Current Status
 
-Full-text review is complete. Manual synthesis-planning classification is underway. Evidence extraction and narrative synthesis have not started.
+Full-text review is complete. Manual synthesis-planning classification is complete for all 28 included studies. Evidence extraction and narrative synthesis have not started.
 
-## Purpose
+## Purpose of Manual Classification
 
-The purpose of synthesis planning is to organize the 28 included studies before extraction and writing. This step helps plan how the evidence should be extracted, grouped, and discussed later.
+Manual synthesis-planning classification organizes the 28 included studies after full-text review and before evidence extraction. It helps plan how later extraction and writing should distinguish policy periods and study scope. It does not include or exclude studies.
 
-## Why Policy Period Classification Is Needed
+## Completed Classification Results
 
-The included studies use different meanings of "postpolicy." Some evaluate FFCRA/COVID continuous Medicaid eligibility beginning in 2020. Others may evaluate formal 12-month postpartum Medicaid extension adoption beginning later in adopting states. Some studies span multiple eras. Therefore, "postpolicy" must be labeled explicitly before writing.
+The manual classification file is `data/manual/synthesis_manual_classification.csv`. Missing policy-period classifications: 0. Missing scope classifications: 0.
 
-## Manual Classification Fields
+These counts are synthesis-planning classification results. They are not PRISMA counts, screening decisions, full-text inclusion decisions, evidence extraction results, or evidence synthesis findings.
 
-- `manual_policy_period_group`: manual policy-period classification.
-- `manual_policy_eras_included`: free-text description of the specific eras included.
-- `manual_scope_type`: manual scope classification, such as national, multi-state, single-state, or unclear.
-- `manual_synthesis_notes`: reviewer notes explaining the classification.
+## Policy Period Classification Table
+
+| Manual policy period | Count |
+| --- | ---: |
+| `pre_policy_baseline_before_ffcra_or_extension` | 12 |
+| `post_ffcra_continuous_eligibility_period` | 2 |
+| `post_12_month_postpartum_extension_period` | 0 |
+| `multiple_policy_eras` | 14 |
+| `unsure_manual_review` | 0 |
+
+## Scope Classification Table
+
+| Manual scope type | Count |
+| --- | ---: |
+| `national` | 7 |
+| `multi_state` | 15 |
+| `single_state` | 6 |
+| `not_clearly_specified` | 0 |
+
+## Multiple Policy Era Breakdown
+
+| Multiple policy era type | Count |
+| --- | ---: |
+| `pre_plus_ffcra` | 11 |
+| `pre_plus_ffcra_plus_12_month_extension` | 2 |
+| `pre_plus_12_month_extension` | 1 |
+| `ffcra_plus_12_month_extension` | 0 |
+| `multiple_eras_unclear` | 0 |
+
+## Implications for Evidence Extraction
+
+Extraction should be organized so that FFCRA/COVID continuous eligibility evidence is distinguishable from formal 12-month postpartum extension evidence. Multiple-era studies should be extracted with attention to which eras are included.
+
+Because no studies are currently classified as exclusively post-12-month extension period, direct evidence on formal 12-month extension implementation may be limited or embedded within multiple-era studies.
+
+National, multi-state, and single-state scope should be retained during extraction because generalizability and state implementation context will matter for writing.
 
 ## What This Step Is Not
 
@@ -29,13 +61,9 @@ The included studies use different meanings of "postpolicy." Some evaluate FFCRA
 - Not evidence synthesis.
 - Not PRISMA count logic.
 
-## How This Will Inform Later Evidence Extraction
-
-After manual classification is complete, evidence extraction can be organized by policy period and scope. This will help avoid combining FFCRA-era continuous eligibility evidence with formal 12-month postpartum extension evidence unless the study itself spans both eras.
-
 ## Next Steps
 
-1. Finish manual synthesis-planning classification for all 28 included studies.
-2. Export manual classification summary by policy period and scope.
-3. Begin evidence extraction using the 28 included studies.
+1. Use the completed manual classification summary to organize extraction planning.
+2. Begin evidence extraction using the 28 included studies.
+3. Retain policy-period and scope fields during extraction.
 4. Draft evidence synthesis only after extraction is complete.

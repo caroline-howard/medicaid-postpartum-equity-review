@@ -77,13 +77,13 @@ A formal risk-of-bias or quality-appraisal approach should be selected before dr
 
 ## Synthesis Plan
 
-Evidence synthesis has not yet been drafted. Before evidence extraction, included studies are being manually classified for synthesis planning by policy period and scope. This classification helps determine how the evidence should be organized later, but it is not an evidence synthesis and does not change inclusion decisions.
+Evidence synthesis has not yet been drafted. Before evidence extraction, included studies were manually classified for synthesis planning by policy period and scope. This classification helps determine how the evidence should be organized later, but it is not an evidence synthesis and does not change inclusion decisions.
 
 ### Manual Synthesis-Planning Classification
 
-Manual synthesis-planning classification occurs after full-text review and before evidence extraction. It distinguishes pre-FFCRA/pre-extension baseline evidence, FFCRA/COVID continuous eligibility evidence, formal 12-month postpartum extension evidence, and multiple-era studies. It also distinguishes national, multi-state, single-state, and unclear scope.
+Manual synthesis-planning classification occurs after full-text review and before evidence extraction. This step has been completed for all 28 included studies. It distinguishes pre-FFCRA/pre-extension baseline evidence, FFCRA/COVID continuous eligibility evidence, formal 12-month postpartum extension evidence, and multiple-era studies. It also distinguishes national, multi-state, single-state, and unclear scope.
 
-This step prevents imprecise writing where all "postpolicy" evidence is treated as the same. It does not alter PRISMA counts, included-study totals, narrowed screening decisions, or full-text decisions.
+This step prevents imprecise writing where all "postpolicy" evidence is treated as the same. It will guide extraction by policy period and scope, but it does not alter PRISMA counts, included-study totals, narrowed screening decisions, or full-text decisions.
 
 ## Automation Statement
 
